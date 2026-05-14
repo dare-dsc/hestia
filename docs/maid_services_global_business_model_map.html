@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: system-ui, -apple-system, sans-serif; background: transparent; color: #1a1a1a; font-size: 13px; }
+  .container { max-width: 960px; margin: 0 auto; padding: 16px; }
+  h1 { font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 3px; }
+  .sub { font-size: 11px; color: #777; margin-bottom: 18px; }
+  .tabs { display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 16px; }
+  .tab { padding: 5px 11px; border-radius: 4px; font-size: 11px; font-weight: 600; cursor: pointer; border: 1.5px solid #ddd; background: #f8f8f8; color: #555; }
+  .tab.active { background: #111; color: #fff; border-color: #111; }
+  .panel { display: none; }
+  .panel.active { display: block; }
+  .sec-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: #999; margin-bottom: 10px; margin-top: 18px; }
+  .sec-label:first-child { margin-top: 0; }
+
+  /* ─── MODEL CARDS ─── */
+  .model-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  @media(max-width:620px){.model-grid{grid-template-columns:1fr;}}
+  .mc { border-radius: 8px; padding: 14px; border-left: 4px solid; }
+  .mc-franchise { background:#fff8e1; border-color:#f9a825; }
+  .mc-platform { background:#e3f2fd; border-color:#1565c0; }
+  .mc-fullstack { background:#e8f5e9; border-color:#2e7d32; }
+  .mc-agency { background:#f3e5f5; border-color:#7b1fa2; }
+  .mc-digital { background:#fff3e0; border-color:#e65100; }
+  .mc .mtype { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 5px; }
+  .mc .mname { font-size: 14px; font-weight: 800; margin-bottom: 5px; }
+  .mc .mexamples { font-size: 11px; color: #555; margin-bottom: 8px; }
+  .mc .mrow { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 6px; }
+  .mc .mchip { font-size: 10px; background: rgba(0,0,0,0.07); border-radius: 3px; padding: 2px 6px; }
+  .mc .mdesc { font-size: 11px; color: #333; line-height: 1.55; }
+  .mc .mtrust { margin-top: 8px; font-size: 11px; background: rgba(0,0,0,0.05); border-radius: 4px; padding: 6px 8px; }
+  .mc .mtrust strong { display: block; font-size: 10px; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 3px; color: #666; }
+  .mc .mflaw { margin-top: 6px; font-size: 11px; color: #c62828; }
+  .mc .mflaw strong { font-weight: 700; }
+
+  /* ─── TRUST GRADIENT ─── */
+  .tg-wrap { display: flex; flex-direction: column; gap: 2px; }
+  .tg-level { display: grid; grid-template-columns: 60px 1fr; gap: 10px; align-items: stretch; }
+  .tg-num { font-size: 11px; font-weight: 800; color: white; border-radius: 5px; display: flex; align-items: center; justify-content: center; min-height: 44px; }
+  .tg-body { border-radius: 5px; padding: 8px 12px; }
+  .tg-title { font-size: 12px; font-weight: 700; margin-bottom: 3px; }
+  .tg-note { font-size: 11px; color: #444; line-height: 1.5; }
+  .tg-players { margin-top: 4px; font-size: 10px; color: #666; }
+  .lvl0 .tg-num{background:#bdbdbd;} .lvl0 .tg-body{background:#f5f5f5;}
+  .lvl1 .tg-num{background:#ef9a9a;} .lvl1 .tg-body{background:#ffebee;}
+  .lvl2 .tg-num{background:#ffcc80;} .lvl2 .tg-body{background:#fff8e1;}
+  .lvl3 .tg-num{background:#81c784;} .lvl3 .tg-body{background:#e8f5e9;}
+  .lvl4 .tg-num{background:#64b5f6;} .lvl4 .tg-body{background:#e3f2fd;}
+  .lvl5 .tg-num{background:#ce93d8;} .lvl5 .tg-body{background:#f3e5f5;}
+  .tg-arrow { text-align: center; color: #ccc; font-size: 14px; padding: 0 0 0 30px; line-height: 1; }
+  .tg-legend { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; margin-bottom: 16px; }
+  .tg-badge { font-size: 10px; padding: 2px 8px; border-radius: 10px; font-weight: 600; }
+
+  /* ─── FORCES ─── */
+  .force-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  @media(max-width:600px){.force-grid{grid-template-columns:1fr;}}
+  .fc { border-radius: 8px; padding: 12px; background: #fafafa; border: 1.5px solid #e0e0e0; }
+  .fc .fname { font-size: 12px; font-weight: 700; margin-bottom: 4px; }
+  .fc .fdef { font-size: 11px; color: #444; line-height: 1.5; margin-bottom: 6px; }
+  .fc .fkenya { font-size: 11px; background: #fff8e1; border-radius: 4px; padding: 5px 8px; border-left: 3px solid #f9a825; }
+  .fc .fkenya strong { display: block; font-size: 10px; text-transform: uppercase; letter-spacing: 0.04em; color: #f57c00; margin-bottom: 3px; }
+
+  /* ─── POSITIONS ─── */
+  .pos-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  @media(max-width:600px){.pos-grid{grid-template-columns:1fr 1fr;}}
+  .pc { border-radius: 8px; padding: 12px; border: 1.5px solid #e0e0e0; background: white; }
+  .pc .pname { font-size: 13px; font-weight: 700; margin-bottom: 3px; }
+  .pc .ptype { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: #888; margin-bottom: 6px; }
+  .pc .pclaim { font-size: 12px; font-style: italic; color: #333; margin-bottom: 6px; line-height: 1.4; }
+  .pc .pprob { font-size: 11px; color: #c62828; margin-top: 6px; }
+
+  /* ─── DISINTERMEDIATION ─── */
+  .di-box { background: #fce4ec; border-radius: 8px; padding: 14px; margin-bottom: 10px; border-left: 4px solid #c62828; }
+  .di-box h3 { font-size: 13px; font-weight: 700; color: #c62828; margin-bottom: 6px; }
+  .di-box p { font-size: 12px; line-height: 1.6; color: #333; }
+  .di-evidence { margin-top: 12px; display: flex; flex-direction: column; gap: 8px; }
+  .die { background: white; border-radius: 6px; padding: 10px 12px; font-size: 11px; line-height: 1.5; }
+  .die .co { font-weight: 700; font-size: 10px; text-transform: uppercase; letter-spacing: 0.04em; color: #888; margin-bottom: 3px; }
+
+  /* ─── COMPARISON ─── */
+  .comp-table { width: 100%; border-collapse: collapse; font-size: 11px; }
+  .comp-table th { background: #111; color: white; padding: 8px 10px; text-align: left; font-size: 10px; text-transform: uppercase; letter-spacing: 0.04em; }
+  .comp-table td { padding: 8px 10px; border-bottom: 1px solid #eee; vertical-align: top; }
+  .comp-table tr:nth-child(even) td { background: #fafafa; }
+  .status-good { color: #2e7d32; font-weight: 700; }
+  .status-warn { color: #e65100; font-weight: 700; }
+  .status-bad { color: #c62828; font-weight: 700; }
+  .status-gap { color: #7b1fa2; font-weight: 700; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>Maid Services — Global Business Model Territory</h1>
+  <p class="sub">K2M Cartographic Engine · How the Models Work, Where They Break, and What Kenya Actually Has</p>
+
+  <div class="tabs">
+    <div class="tab active" onclick="sw('models')">Model Shapes</div>
+    <div class="tab" onclick="sw('trust')">Trust Gradient</div>
+    <div class="tab" onclick="sw('forces')">Forces</div>
+    <div class="tab" onclick="sw('positioning')">Positioning</div>
+    <div class="tab" onclick="sw('leak')">The Fatal Leak</div>
+    <div class="tab" onclick="sw('compare')">Kenya vs World</div>
+  </div>
+
+  <!-- MODEL SHAPES -->
+  <div class="panel active" id="panel-models">
+    <div class="sec-label">The 5 Model Shapes Running Globally</div>
+    <div class="model-grid">
+      <div class="mc mc-franchise">
+        <div class="mtype">Model 1 · Franchise</div>
+        <div class="mname">The Brand Promise</div>
+        <div class="mexamples">Molly Maid, Merry Maids, The Maids (US/Canada/UK)</div>
+        <div class="mrow">
+          <span class="mchip">~$855K avg revenue/unit</span>
+          <span class="mchip">90% repeat customers</span>
+          <span class="mchip">3–6.5% royalty</span>
+        </div>
+        <div class="mdesc">Pure recurring subscription economics. Franchise owner runs local ops; brand provides the trust proxy. Initial investment $140K–$200K. Revenue is cleaning sessions, weekly/biweekly. 90% of Molly Maid's 1.7M annual cleanings come from repeat customers. The model is essentially a recurring revenue SaaS disguised as a cleaning service.</div>
+        <div class="mtrust"><strong>Trust mechanism</strong>Brand uniformity → standardised training → replacement guarantee → insurance. You trust the brand, not the individual. The cleaner is anonymous to the model but the brand is not.</div>
+        <div class="mflaw"><strong>Flaw:</strong> Capital intensive to franchise. Doesn't work at the price point of developing markets. Doesn't exist in Kenya.</div>
+      </div>
+
+      <div class="mc mc-platform">
+        <div class="mtype">Model 2 · Platform / Marketplace</div>
+        <div class="mname">The Commission Rake</div>
+        <div class="mexamples">Handy (US), Helpling (Europe), TaskRabbit (IKEA), Homejoy (dead)</div>
+        <div class="mrow">
+          <span class="mchip">15–25% commission</span>
+          <span class="mchip">$75M rev (TaskRabbit)</span>
+          <span class="mchip">$96M raised (Helpling)</span>
+        </div>
+        <div class="mdesc">Aggregator model — no assets, just matchmaking + payments. Takes a cut on each transaction. Helpling's insight: "home cleaning is the hardest vertical but once you win trust, cross-selling everything else is easy." 85% of Helpling's business is recurring. TaskRabbit doubled after IKEA integration; furniture assembly became 10% of bookings.</div>
+        <div class="mtrust"><strong>Trust mechanism</strong>Reviews + ratings + background checks + insurance + payments through platform. Platform holds the money flow as proof of trust.</div>
+        <div class="mflaw"><strong>Fatal flaw:</strong> Disintermediation. Cleaners build relationships with households then go direct. Homejoy killed by this + misclassification lawsuits ($6M Handy settlement for 25K workers). See "Fatal Leak" tab.</div>
+      </div>
+
+      <div class="mc mc-fullstack">
+        <div class="mtype">Model 3 · Full-Stack Platform</div>
+        <div class="mname">The Infrastructure Owner</div>
+        <div class="mexamples">Urban Company (India → UAE, Singapore, Saudi Arabia)</div>
+        <div class="mrow">
+          <span class="mchip">INR 1,144 crore FY25 (~$137M)</span>
+          <span class="mchip">50K+ workers</span>
+          <span class="mchip">59 cities</span>
+          <span class="mchip">First profitable FY25</span>
+        </div>
+        <div class="mdesc">Not a marketplace. Owns the worker experience end-to-end: multi-day training, tools, uniform, insurance, income predictability, police verification + facial recognition on arrival, community-verified reviews. Workers are micro-entrepreneurs, not gig workers. Trust is solved at every layer of the stack, not just at matching.</div>
+        <div class="mtrust"><strong>Trust mechanism</strong>Government ID → police verification → skill assessment → multi-day training → on-arrival selfie facial recognition matched to profile → post-job review. Trust is a process, not a score.</div>
+        <div class="mflaw"><strong>Tension:</strong> 2024 worker protests in Bengaluru over qualifying fees + account blocking. Workers treated as micro-entrepreneurs in positioning but as exploited gig workers in practice at margin.</div>
+      </div>
+
+      <div class="mc mc-agency">
+        <div class="mtype">Model 4 · Premium Agency</div>
+        <div class="mname">The High-Touch Broker</div>
+        <div class="mexamples">Sashley Nannies, Dovecare Africa, Nurturing Nest, BestCare (Kenya)</div>
+        <div class="mrow">
+          <span class="mchip">KSh 2,000–10,000 placement fee</span>
+          <span class="mchip">KSh 1,500/mo retainer</span>
+          <span class="mchip">Interview commitment fee</span>
+        </div>
+        <div class="mdesc">Human-led matching. Personal interview, reference checks, training programs, replacement guarantee within a defined period. Revenue = placement fee + monthly agency fee (while the hire is active). Revenue is fragile: hire leaves = retainer gone. Business is as stable as its retention rate.</div>
+        <div class="mtrust"><strong>Trust mechanism</strong>Human vetting (staff who meet every worker personally), reference checks, interview process. Trust is mediated by the agency's reputation and relationship with the employer.</div>
+        <div class="mflaw"><strong>Flaw:</strong> Doesn't scale. Every placement requires human time. Monthly retainer only lasts while placement holds. No network effects. High repeat cost per hire.</div>
+      </div>
+
+      <div class="mc mc-digital">
+        <div class="mtype">Model 5 · Digital Profile Marketplace</div>
+        <div class="mname">The Transparency Layer</div>
+        <div class="mexamples">Msichana.co.ke (Kenya) · browse + unlock model</div>
+        <div class="mrow">
+          <span class="mchip">KSh 200 profile unlock</span>
+          <span class="mchip">Employer reviews</span>
+          <span class="mchip">Browse-first UX</span>
+        </div>
+        <div class="mdesc">You browse hundreds of verified profiles, compare by region/salary/type/reviews, then pay a small fee to unlock contact details. The model flips the traditional agency's "we assign you someone" to "you choose who you want." Positions against traditional bureaus with transparency, speed (hours not days), and low-risk entry price.</div>
+        <div class="mtrust"><strong>Trust mechanism</strong>ID verification + reference checks + employer reviews. Thinner than Urban Company but directionally correct. The review layer is the trust engine — same mechanic as Airbnb, Uber, TaskRabbit.</div>
+        <div class="mflaw"><strong>Gap:</strong> Thin on identity verification depth. No on-arrival accountability. No training standard. Reviews only accumulate after hires — trust at the first hire (highest-risk moment) is still thin.</div>
+      </div>
+
+      <div class="mc" style="background:#f5f5f5; border-left:4px solid #9e9e9e;">
+        <div class="mtype">Model 6 · Informal / Social Media</div>
+        <div class="mname">The Unstructured Default</div>
+        <div class="mexamples">Facebook groups, WhatsApp networks, Jiji, Pigiame, word-of-mouth (Kenya)</div>
+        <div class="mrow">
+          <span class="mchip">Zero platform fees</span>
+          <span class="mchip">Zero verification</span>
+          <span class="mchip">Dominant by volume</span>
+        </div>
+        <div class="mdesc">The majority of Kenya's domestic worker hiring still happens here. Free, immediate, wide supply. No accountability, no vetting, fake profiles common. The comment section of Mother Goose Kenya's pricing page is a live job board — workers posting phone numbers, employers stating requirements. The informal market is the real incumbent.</div>
+        <div class="mtrust"><strong>Trust mechanism</strong>Community social proof — someone your cousin knows. Tribal/network trust. No digital infrastructure. Breaks completely for diaspora employers, expats, or new residents with no network.</div>
+        <div class="mflaw"><strong>Not a flaw — it's the baseline:</strong> Any formal product must be better than the free informal option. The informal market sets the floor, not the ceiling.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TRUST GRADIENT -->
+  <div class="panel" id="panel-trust">
+    <div class="sec-label">The Trust Gradient — How Each Model Moves Through It</div>
+    <div class="tg-legend">
+      <span class="tg-badge" style="background:#fff8e1;color:#f57c00;">Franchise</span>
+      <span class="tg-badge" style="background:#e3f2fd;color:#1565c0;">Platform</span>
+      <span class="tg-badge" style="background:#e8f5e9;color:#2e7d32;">Full-Stack (Urban Co)</span>
+      <span class="tg-badge" style="background:#f3e5f5;color:#7b1fa2;">Agency (Kenya)</span>
+      <span class="tg-badge" style="background:#fce4ec;color:#c62828;">Informal / Default</span>
+    </div>
+    <div class="tg-wrap">
+      <div class="tg-level lvl0">
+        <div class="tg-num">0</div>
+        <div class="tg-body">
+          <div class="tg-title">No Trust — Stranger Off the Street</div>
+          <div class="tg-note">The starting state for any new domestic hire. Pure fear firmware active. The hiring event hasn't happened yet — just search and anxiety.</div>
+          <div class="tg-players">All models start here. Informal market stays here by default.</div>
+        </div>
+      </div>
+      <div class="tg-arrow">↓</div>
+      <div class="tg-level lvl1">
+        <div class="tg-num">1</div>
+        <div class="tg-body">
+          <div class="tg-title">Awareness — They Exist and Are Findable</div>
+          <div class="tg-note">Someone can be found on Msichana, Jiji, a Facebook group, a bureau. Existence is confirmed. This is a platform or marketing problem, not a trust problem.</div>
+          <div class="tg-players">All digital models reach here. Informal: WhatsApp/Facebook groups. Msichana's browse UX lands here quickly.</div>
+        </div>
+      </div>
+      <div class="tg-arrow">↓</div>
+      <div class="tg-level lvl2">
+        <div class="tg-num">2</div>
+        <div class="tg-body">
+          <div class="tg-title">Credibility — Identity Verified, Documents Real</div>
+          <div class="tg-note">ID check, police clearance certificate, reference verified. The person is who they say they are and has a clean record. This is where most Kenyan agencies stop.</div>
+          <div class="tg-players">Agency (Kenya): mostly stops here. Msichana: ID + reference checks. Urban Company: government ID + police verification (much deeper stack). Informal: never reaches here reliably.</div>
+        </div>
+      </div>
+      <div class="tg-arrow">↓</div>
+      <div class="tg-level lvl3">
+        <div class="tg-num">3</div>
+        <div class="tg-body">
+          <div class="tg-title">Competence — Trained, Skilled, Assessed</div>
+          <div class="tg-note">Can actually do the work. Has been trained in child care, cleaning standards, cooking, safety. Skill assessed by a third party. This is where Mother Goose, trained agency models try to differentiate.</div>
+          <div class="tg-players">Mother Goose Kenya: nanny school (ECDE diploma required). Urban Company: multi-day training programs per service type. Franchise (Molly Maid): standardized training for all cleaners. Most Kenyan digital platforms: absent at this level.</div>
+        </div>
+      </div>
+      <div class="tg-arrow">↓</div>
+      <div class="tg-level lvl4">
+        <div class="tg-num">4</div>
+        <div class="tg-body">
+          <div class="tg-title">Integrity — Track Record, Reviews, Accumulated Proof</div>
+          <div class="tg-note">Has worked before, been reviewed honestly by prior employers, built a portable reputation. This is where platforms build moat. Reviews are network-effect infrastructure — each review makes the next hire cheaper.</div>
+          <div class="tg-players">TaskRabbit: rating system. Urban Company: "156 people used this professional" community-verified database. Msichana: employer reviews (early but directionally correct). Franchise: brand reputation as proxy. Informal/Kenya agencies: missing — this layer is where the industry ruptures.</div>
+        </div>
+      </div>
+      <div class="tg-arrow">↓</div>
+      <div class="tg-level lvl5">
+        <div class="tg-num">5</div>
+        <div class="tg-body">
+          <div class="tg-title">Identity Commitment — The Long Relationship</div>
+          <div class="tg-note">The trusted worker who has been with a family for years. "I stayed with my nanny for 13 years." This is what the market actually wants but rarely designs for. The franchise model manufactures this feeling through brand. Community referral produces it organically — slowly. Digital platforms rarely reach it.</div>
+          <div class="tg-players">Word-of-mouth referral: the only path to level 5 in Kenya today. Molly Maid: brand substitutes for personal relationship. Urban Company: attempting through micro-entrepreneur model. The retention problem nobody is solving in Kenya.</div>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top:14px; padding:12px; background:#e3f2fd; border-radius:8px; font-size:12px; color:#1a1a1a; line-height:1.6; border-left:4px solid #1565c0;">
+      <strong>The structural gap in Kenya:</strong> Every local player is solving trust at levels 1–3. The platforms (Msichana) are attempting level 4. Nobody is engineering for level 5 — the long relationship — which is the only level that produces retention, referral, and defensible economics.
+    </div>
+  </div>
+
+  <!-- FORCES -->
+  <div class="panel" id="panel-forces">
+    <div class="sec-label">Forces Shaping This Territory</div>
+    <div class="force-grid">
+      <div class="fc">
+        <div class="fname">Trust, Identity &amp; Reputation Force</div>
+        <div class="fdef">"Trust becomes infrastructure when proximity disappears." In digital environments, reputational systems lower economic friction across transactions. Where trust accumulates, acquisition gets cheaper. Where trust collapses, friction explodes.</div>
+        <div class="fkenya"><strong>In Kenya</strong>Community proximity (referral networks) IS the trust infrastructure. Digital trust is attempting to replace physical proximity but hasn't matched the conviction. The viral theft story (Tuko.co.ke) is a trust-collapse event that resets the entire market's firmware simultaneously.</div>
+      </div>
+      <div class="fc">
+        <div class="fname">Trust-Gradient Diffusion Force</div>
+        <div class="fdef">"Innovation spreads socially before it spreads economically." New categories move through bridges, opinion leaders, and layered trust sequences. Adoption is carried socially before it normalises economically.</div>
+        <div class="fkenya"><strong>In Kenya</strong>Msichana's review model is trying to diffuse trust digitally. But it's asking for identity-level commitment (let this person into my home) with awareness-level proof (a few online reviews). The trust transport mechanism hasn't reached the nodes that matter.</div>
+      </div>
+      <div class="fc">
+        <div class="fname">Positioning Gravity Force</div>
+        <div class="fdef">"No product is judged in a vacuum." Every product is judged inside the buyer's existing comparison set — whether you define it or not. Many failures are failures of frame, not raw product weakness.</div>
+        <div class="fkenya"><strong>In Kenya</strong>Every agency is being compared to "my cousin's recommendation." Until a new operator creates a new comparison set — "the Urban Company of Kenya" — all digital platforms are judged against free word-of-mouth. The positioning battle is being lost before the product is evaluated.</div>
+      </div>
+      <div class="fc">
+        <div class="fname">Disintermediation Force</div>
+        <div class="fdef">In high-touch, recurring, trust-heavy services, the relationship value accrues to the worker-customer pair, not the platform. Every recurring relationship is a departure waiting to happen.</div>
+        <div class="fkenya"><strong>In Kenya</strong>This force is already operating — clients who find good workers through bureaus stop paying the monthly retainer the moment the relationship is established. The Mother Goose KSh 1,500/month fee is the friction. Good workers = agencies losing revenue. The business model punishes its own success.</div>
+      </div>
+      <div class="fc">
+        <div class="fname">Network Effects &amp; Liquidity Force</div>
+        <div class="fdef">Platforms only become valuable when both sides have enough density. A marketplace with thin supply or thin demand is just an expensive directory.</div>
+        <div class="fkenya"><strong>In Kenya</strong>Msichana lists hundreds of profiles but most show "No employer reviews yet" — the review layer is thin. Without reviews, the platform is a directory, not a trust infrastructure. The network effect is in its infancy. This is the most critical gap: whoever accumulates the first 10,000 employer reviews owns the territory.</div>
+      </div>
+      <div class="fc">
+        <div class="fname">Demand Aggregation &amp; Recurring Revenue Force</div>
+        <div class="fdef">The value of a service business is a function of its repeat rate, not its acquisition rate. Single transactions fund nothing; recurring relationships compound.</div>
+        <div class="fkenya"><strong>In Kenya</strong>The recurring revenue model barely exists formally. Molly Maid runs on 90% repeat customers and $855K/unit revenue. Kenyan agencies charge a one-time placement fee that evaporates when the hire leaves. Nobody has built the subscription layer that converts a placement into a long-term revenue stream.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- POSITIONING -->
+  <div class="panel" id="panel-positioning">
+    <div class="sec-label">How They Position — The Claims and the Reality</div>
+    <div class="pos-grid">
+      <div class="pc">
+        <div class="pname">Molly Maid / Merry Maids</div>
+        <div class="ptype">Franchise · US/Canada</div>
+        <div class="pclaim">"Professional. Consistent. Insured."</div>
+        <div style="font-size:11px;color:#444;line-height:1.5;">Positioning: the brand as trust. You don't hire a person, you hire a system. Recurring service, team cleaning (never alone), uniformed, insured. The individual is invisible; the brand is everything.</div>
+      </div>
+      <div class="pc">
+        <div class="pname">TaskRabbit / IKEA</div>
+        <div class="ptype">Platform · Global</div>
+        <div class="pclaim">"Book a Tasker. Get things done."</div>
+        <div style="font-size:11px;color:#444;line-height:1.5;">Positioning: convenience + control. You pick the person, the time, the price. The IKEA integration shifted the core from "trust a stranger" to "get your furniture assembled after buying it" — a non-threatening entry task that builds the relationship for bigger, more intimate work later.</div>
+      </div>
+      <div class="pc">
+        <div class="pname">Urban Company</div>
+        <div class="ptype">Full-Stack · India</div>
+        <div class="pclaim">"Professionals at your doorstep."</div>
+        <div style="font-size:11px;color:#444;line-height:1.5;">Positioning: professionalisation. Not a maid — a professional. The word is deliberate. It reframes the worker's identity, the employer's expectation, and the platform's value proposition. You're not trusting a stranger; you're booking a credentialed professional. Same move Uber made with "ride."</div>
+      </div>
+      <div class="pc">
+        <div class="pname">Msichana.co.ke</div>
+        <div class="ptype">Digital Platform · Kenya</div>
+        <div class="pclaim">"You choose. Not the bureau."</div>
+        <div style="font-size:11px;color:#444;line-height:1.5;">Positioning: anti-agency. The claim is transparency and control vs. the traditional bureau's black box. Smart framing — directly addresses the key employer frustration with agencies. But the trust depth (reviews, verification) is thin. Control without trust is a directory, not a marketplace.</div>
+        <div class="pprob">Gap: Positioning is correct but trust infrastructure is underbuilt.</div>
+      </div>
+      <div class="pc">
+        <div class="pname">Nurturing Nest / BestCare</div>
+        <div class="ptype">Premium Agency · Kenya</div>
+        <div class="pclaim">"Vetted. Trained. Professional."</div>
+        <div style="font-size:11px;color:#444;line-height:1.5;">Positioning: premium trust broker. Differentiates on process quality — thorough vetting, training, replacement guarantees. Targets upper-middle class Nairobi. Sells peace of mind as the product, not the worker.</div>
+        <div class="pprob">Gap: Doesn't scale. Every hire requires human time. No network effect.</div>
+      </div>
+      <div class="pc">
+        <div class="pname">Mother Goose Kenya</div>
+        <div class="ptype">CBO / Training Agency · Kenya</div>
+        <div class="pclaim">"Professional nannies. Trained. Ethical."</div>
+        <div style="font-size:11px;color:#444;line-height:1.5;">Positioning: training as the trust signal. Requires ECDE diploma, nanny school certification. Adds worker welfare dimension (NHIF, NSSF compliance). Positions at intersection of worker development and employer safety. Revenue model: placement + monthly retainer.</div>
+        <div class="pprob">Gap: Revenue model erodes when good placements become direct relationships.</div>
+      </div>
+    </div>
+    <div style="margin-top:14px; padding:12px; background:#f3e5f5; border-radius:8px; font-size:12px; line-height:1.6; border-left:4px solid #7b1fa2;">
+      <strong>The positioning white space in Kenya:</strong> Nobody has claimed "Professionals" as a category. Msichana is closest but stops at "transparency." The operator who says "we don't place maids — we credential domestic professionals" and builds the infrastructure to back it will own an entirely new comparison set.
+    </div>
+  </div>
+
+  <!-- THE FATAL LEAK -->
+  <div class="panel" id="panel-leak">
+    <div class="sec-label">The Fatal Leak — Why Platforms Fail in This Category</div>
+    <div class="di-box">
+      <h3>Disintermediation: The Force That Kills Platforms in High-Touch Services</h3>
+      <p>When you put a cleaner and a household together repeatedly, the relationship value accumulates between the two parties — not on the platform. Every trust platform in this space is fighting the gravity of the direct relationship. The platform's 15–25% cut becomes friction with no corresponding value once the relationship exists. The rational move for both parties is to go direct.</p>
+    </div>
+    <div class="sec-label">Evidence Across the Territory</div>
+    <div class="di-evidence">
+      <div class="die">
+        <div class="co">Homejoy (US) · Dead 2015</div>
+        Raised $40M. Cleaners used the platform to find clients, then set up direct cleaning relationships, bypassing Homejoy entirely. Their best workers graduated into small independent cleaning businesses. The platform's 25% cut made direct work economically irrational to refuse. Killed also by worker misclassification lawsuits that would have destroyed the unit economics. Shut down July 31, 2015.
+      </div>
+      <div class="die">
+        <div class="co">Handy (US) · $6M Settlement</div>
+        Paid $6M to settle misclassification lawsuit (25,000 workers, avg. payout &lt;$200). Workers classified as independent contractors had no healthcare, paid leave, or unemployment insurance. As part of settlement, workers now set their own rates and can negotiate directly with clients. The settlement structurally opened the door to the direct relationship Handy was trying to prevent.
+      </div>
+      <div class="die">
+        <div class="co">Mother Goose Kenya · Revenue Erosion</div>
+        The KSh 1,500/month agency fee exists only while the placement holds. A successful placement creates a direct relationship — which is exactly what the employer and worker want. The longer the relationship lasts, the less value the agency provides. The business model charges for access to a relationship that, once formed, needs no intermediary. Every long-lasting placement is a revenue leak.
+      </div>
+      <div class="die">
+        <div class="co">The Market Default (Kenya) · Informal = Direct from Day One</div>
+        The informal market — WhatsApp, Facebook, word-of-mouth — is structurally direct. No intermediary, no fee, no accountability. This is what every formal player is competing against. The comment section of Mother Goose's pricing page is itself a live disintermediation event: workers posting phone numbers directly to employers on the agency's own page.
+      </div>
+      <div class="die">
+        <div class="co">Urban Company (India) · The Only Surviving Answer</div>
+        Urban Company's response to disintermediation is the only one that works at scale: own the worker relationship as deeply as the customer relationship. Workers are micro-entrepreneurs with training, tools, income predictability, and career development — not interchangeable gig workers. The platform has value to the worker even after the customer relationship is established, because the platform provides income certainty, insurance, and a brand that commands higher pay than the worker could charge independently.
+      </div>
+    </div>
+    <div style="margin-top:14px; padding:12px; background:#e8f5e9; border-radius:8px; font-size:12px; line-height:1.6; border-left:4px solid #2e7d32;">
+      <strong>The formula that survives disintermediation:</strong> The platform must be worth more to the worker than the direct relationship. If the platform only provides customer access, the worker will leave. If the platform provides training, brand reputation, income smoothing, insurance, and career development — the worker has no reason to go direct. Urban Company built this. Nobody in Kenya has.
+    </div>
+  </div>
+
+  <!-- KENYA VS WORLD -->
+  <div class="panel" id="panel-compare">
+    <div class="sec-label">Kenya vs World — Where the Gap Lives</div>
+    <table class="comp-table">
+      <thead>
+        <tr>
+          <th>Dimension</th>
+          <th>Global Best (Urban Co / Franchise)</th>
+          <th>Kenya Best (Msichana / Agency)</th>
+          <th>Gap</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Trust infrastructure</strong></td><td class="status-good">Facial recognition on arrival, police verification, multi-day training, community reviews, insurance</td><td class="status-warn">ID check + reference + some employer reviews. No on-arrival verification. No insurance.</td><td class="status-gap">No accountability at the moment of entry. The highest-risk moment is unprotected.</td></tr>
+        <tr><td><strong>Worker development</strong></td><td class="status-good">Training programs, tools, income predictability, career progression, insurance</td><td class="status-warn">Mother Goose does ECDE certification. Others: basic orientation at best.</td><td class="status-gap">No portable reputation system. Worker leaves Agency A, starts from zero at Agency B.</td></tr>
+        <tr><td><strong>Revenue model</strong></td><td class="status-good">Subscription / recurring (Molly Maid 90% repeat). Platform commission on repeat transactions (Helpling 85% recurring).</td><td class="status-warn">One-time placement fee + monthly retainer that evaporates when placements end. No subscription. No recurring transaction capture.</td><td class="status-bad">No recurring revenue architecture. Every good hire is a revenue loss event.</td></tr>
+        <tr><td><strong>Disintermediation defence</strong></td><td class="status-good">Urban Company: platform worth more to worker than direct relationship. Franchise: brand is the relationship, individual is interchangeable.</td><td class="status-warn">None. The business model creates the incentive to go direct.</td><td class="status-bad">No platform survives if going direct costs less than staying in the network.</td></tr>
+        <tr><td><strong>Diaspora product</strong></td><td class="status-good">Remote worker monitoring apps exist in US/EU (Sittercity, Care.com have parent visibility features)</td><td class="status-bad">No Kenya product exists for diaspora visibility. The highest-paying, most-anxious segment has no solution.</td><td class="status-gap">~3M Kenyans in diaspora. No product. Salome Wanjiku is the customer nobody is serving.</td></tr>
+        <tr><td><strong>Geographic reach</strong></td><td class="status-good">Urban Company: 59 cities, 4 countries. Molly Maid: 450+ US locations.</td><td class="status-warn">Nairobi-centric. Mombasa and Kisumu underserved. Nakuru/Eldoret barely touched formally.</td><td class="status-gap">Kenya outside Nairobi is uncharted territory for any formal operator.</td></tr>
+        <tr><td><strong>Review / social proof layer</strong></td><td class="status-good">Urban Company: "156 people used this professional." TaskRabbit: rating + reviews per task. Robust review velocity.</td><td class="status-warn">Msichana: reviews exist but many profiles show "No employer reviews yet." Review density is low.</td><td class="status-gap">Without review density, the platform is a directory. First mover to 10K reviews owns the category.</td></tr>
+        <tr><td><strong>Price architecture</strong></td><td class="status-good">Multiple tiers: budget cleaning (franchise standard) → premium professional (Urban Company trained specialist)</td><td class="status-warn">Collapsed into one bracket: placement fee + salary. No tiering. No premium product line.</td><td class="status-gap">No premium tier = no route to higher margins. The market is stuck at commodity pricing.</td></tr>
+      </tbody>
+    </table>
+    <div style="margin-top:14px; padding:12px; background:#fff3e0; border-radius:8px; font-size:12px; line-height:1.6; border-left:4px solid #e65100;">
+      <strong>The single most important gap:</strong> Kenya has no operator who has solved trust at levels 3–5 (competence, integrity, identity) with a business model that doesn't self-destruct through disintermediation. The opportunity is not incremental — it is category-defining. The operator who builds training + portable reputation + recurring revenue + diaspora visibility in Kenya will be building the Urban Company of East Africa.
+    </div>
+  </div>
+
+</div>
+<script>
+  function sw(name){
+    document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+    document.getElementById('panel-'+name).classList.add('active');
+    event.target.classList.add('active');
+  }
+</script>
+</body>
+</html>
