@@ -1,0 +1,1251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta
+    name="description"
+    content="Hestia provides verified household help for Runda homes, with a written Trust Packet, placement support, and 7-day and 30-day check-ins."
+  />
+  <title>Hestia - Verified Household Help for Runda Homes</title>
+  <link rel="icon" type="image/png" href="../brand/hestia-mark.png" />
+  <link rel="apple-touch-icon" href="../brand/hestia-mark.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Outfit:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  />
+  <style>
+    :root {
+      --paper: #f6f1e8;
+      --surface: #fffdf8;
+      --surface-deep: #ece2d1;
+      --ink: #25201c;
+      --ink-soft: #70635b;
+      --line: #dacbb8;
+      --line-strong: #b9a58f;
+      --accent: #b85f42;
+      --accent-dark: #8f442f;
+      --charcoal: #211d1a;
+      --charcoal-soft: #38302b;
+      --white: #fffaf0;
+      --good: #667354;
+      --shadow: 0 24px 70px -44px rgba(37, 32, 28, 0.42);
+      --radius: 8px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      background:
+        linear-gradient(90deg, rgba(37, 32, 28, 0.035) 1px, transparent 1px),
+        linear-gradient(180deg, rgba(37, 32, 28, 0.028) 1px, transparent 1px),
+        var(--paper);
+      background-size: 72px 72px;
+      color: var(--ink);
+      font-family: "Outfit", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: 60;
+      pointer-events: none;
+      opacity: 0.045;
+      mix-blend-mode: multiply;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button,
+    a {
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .shell {
+      width: min(100% - 40px, 1320px);
+      margin-inline: auto;
+    }
+
+    .mono {
+      font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      border-bottom: 1px solid rgba(218, 203, 184, 0.9);
+      background: rgba(255, 253, 248, 0.86);
+      backdrop-filter: blur(18px);
+    }
+
+    .topbar-inner {
+      min-height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      width: 132px;
+      height: 44px;
+      overflow: hidden;
+    }
+
+    .brand-logo {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+      object-position: center;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      min-height: 44px;
+      border-radius: 999px;
+      padding: 0 18px;
+      font-size: 14px;
+      font-weight: 700;
+      transition: transform 220ms cubic-bezier(0.16, 1, 0.3, 1), border-color 220ms ease, background 220ms ease;
+      white-space: nowrap;
+    }
+
+    .btn:active {
+      transform: translateY(1px) scale(0.98);
+    }
+
+    .btn svg {
+      width: 17px;
+      height: 17px;
+      flex: 0 0 auto;
+    }
+
+    .btn-primary {
+      color: var(--white);
+      background: var(--accent);
+      border: 1px solid var(--accent);
+    }
+
+    .btn-primary:hover {
+      background: var(--accent-dark);
+      border-color: var(--accent-dark);
+    }
+
+    .btn-secondary {
+      color: var(--ink);
+      background: var(--surface);
+      border: 1px solid var(--line);
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--accent);
+    }
+
+    .hero {
+      min-height: calc(100dvh - 72px);
+      display: grid;
+      align-items: center;
+      padding: 58px 0 70px;
+      position: relative;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.02fr) minmax(430px, 0.78fr);
+      gap: clamp(38px, 6vw, 92px);
+      align-items: center;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: 600;
+      margin-bottom: 22px;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 38px;
+      height: 1px;
+      background: var(--accent);
+    }
+
+    h1,
+    h2,
+    h3,
+    p {
+      margin: 0;
+    }
+
+    h1 {
+      max-width: 860px;
+      font-size: clamp(48px, 7.2vw, 110px);
+      line-height: 0.93;
+      letter-spacing: -0.055em;
+      font-weight: 800;
+    }
+
+    .hero-copy {
+      max-width: 660px;
+      margin-top: 28px;
+      color: var(--ink-soft);
+      font-size: clamp(18px, 1.8vw, 24px);
+      line-height: 1.45;
+    }
+
+    .hero-copy strong {
+      color: var(--ink);
+      font-weight: 700;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 34px;
+    }
+
+    .offer-strip {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1px;
+      margin-top: 42px;
+      max-width: 780px;
+      border: 1px solid var(--line);
+      background: var(--line);
+      box-shadow: var(--shadow);
+    }
+
+    .offer-cell {
+      background: rgba(255, 253, 248, 0.78);
+      padding: 18px 18px 17px;
+    }
+
+    .offer-label {
+      color: var(--accent);
+      font-size: 10px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .offer-value {
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .packet-wrap {
+      position: relative;
+      min-height: 632px;
+    }
+
+    .packet-shadow {
+      position: absolute;
+      inset: 38px 0 0 34px;
+      border: 1px solid rgba(143, 68, 47, 0.28);
+      background: rgba(184, 95, 66, 0.08);
+      transform: rotate(3.5deg);
+    }
+
+    .packet {
+      position: relative;
+      background: var(--surface);
+      border: 1px solid var(--line-strong);
+      box-shadow: 0 34px 90px -54px rgba(37, 32, 28, 0.62);
+      padding: 28px;
+      min-height: 600px;
+    }
+
+    .packet-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 18px;
+      padding-bottom: 22px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .packet-title {
+      font-size: 13px;
+      color: var(--accent);
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .packet-name {
+      font-size: 32px;
+      line-height: 1;
+      letter-spacing: -0.04em;
+      font-weight: 800;
+    }
+
+    .stamp {
+      width: 116px;
+      height: 116px;
+      border: 2px solid var(--accent);
+      border-radius: 50%;
+      transform: rotate(-9deg);
+      display: grid;
+      place-items: center;
+      color: var(--accent);
+      flex: 0 0 auto;
+    }
+
+    .stamp span {
+      font-size: 10px;
+      font-weight: 700;
+      line-height: 1.35;
+      text-align: center;
+    }
+
+    .packet-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      padding: 24px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .packet-meta {
+      min-height: 86px;
+    }
+
+    .packet-meta .label,
+    .packet-row .label,
+    .step .label,
+    .boundary .label {
+      color: var(--accent);
+      font-size: 10px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .packet-meta .value {
+      color: var(--ink);
+      font-size: 16px;
+      line-height: 1.34;
+      font-weight: 600;
+    }
+
+    .packet-rows {
+      display: grid;
+      gap: 0;
+    }
+
+    .packet-row {
+      display: grid;
+      grid-template-columns: 32px minmax(0, 1fr);
+      gap: 14px;
+      align-items: start;
+      padding: 18px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .packet-row:last-child {
+      border-bottom: 0;
+    }
+
+    .check-dot {
+      width: 28px;
+      height: 28px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      color: var(--white);
+      background: var(--accent);
+      margin-top: 2px;
+    }
+
+    .check-dot svg {
+      width: 15px;
+      height: 15px;
+    }
+
+    .packet-row p {
+      color: var(--ink-soft);
+      font-size: 15px;
+      line-height: 1.45;
+    }
+
+    .packet-row strong {
+      color: var(--ink);
+    }
+
+    .section {
+      padding: clamp(74px, 10vw, 132px) 0;
+      border-top: 1px solid var(--line);
+    }
+
+    .section.dark {
+      background: var(--charcoal);
+      color: var(--white);
+      border-top: 0;
+    }
+
+    .section-header {
+      display: grid;
+      grid-template-columns: minmax(240px, 0.7fr) minmax(0, 1.3fr);
+      gap: clamp(28px, 7vw, 110px);
+      align-items: start;
+      margin-bottom: clamp(34px, 5vw, 68px);
+    }
+
+    .section-kicker {
+      color: var(--accent);
+      font-size: 11px;
+      font-weight: 700;
+      padding-top: 7px;
+    }
+
+    h2 {
+      font-size: clamp(38px, 5vw, 74px);
+      line-height: 0.98;
+      letter-spacing: -0.045em;
+      font-weight: 800;
+      max-width: 820px;
+    }
+
+    .lead {
+      color: var(--ink-soft);
+      max-width: 700px;
+      font-size: 19px;
+      line-height: 1.52;
+      margin-top: 22px;
+    }
+
+    .dark .lead {
+      color: rgba(255, 250, 240, 0.68);
+    }
+
+    .compare {
+      display: grid;
+      grid-template-columns: minmax(0, 0.86fr) minmax(0, 1.14fr);
+      gap: 1px;
+      background: var(--line);
+      border: 1px solid var(--line);
+    }
+
+    .compare-col {
+      background: rgba(255, 253, 248, 0.86);
+      padding: clamp(24px, 4vw, 42px);
+    }
+
+    .compare-col.hestia {
+      background: var(--surface);
+    }
+
+    .compare-title {
+      font-size: 27px;
+      letter-spacing: -0.03em;
+      font-weight: 800;
+      margin-bottom: 20px;
+    }
+
+    .compare-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      gap: 16px;
+    }
+
+    .compare-list li {
+      display: grid;
+      grid-template-columns: 22px minmax(0, 1fr);
+      gap: 12px;
+      color: var(--ink-soft);
+      line-height: 1.46;
+      font-size: 16px;
+    }
+
+    .minus,
+    .plus {
+      width: 22px;
+      height: 22px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 13px;
+      font-weight: 600;
+      margin-top: 1px;
+    }
+
+    .minus {
+      border: 1px solid var(--line-strong);
+      color: var(--ink-soft);
+      background: var(--surface);
+    }
+
+    .plus {
+      color: var(--white);
+      background: var(--accent);
+    }
+
+    .packet-details {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 24px;
+    }
+
+    .detail-panel {
+      border-top: 1px solid var(--line);
+      padding-top: 22px;
+      min-height: 162px;
+    }
+
+    .detail-panel h3 {
+      font-size: 24px;
+      letter-spacing: -0.03em;
+      margin-bottom: 12px;
+    }
+
+    .detail-panel p {
+      color: var(--ink-soft);
+      font-size: 16px;
+      line-height: 1.5;
+      max-width: 520px;
+    }
+
+    .steps {
+      display: grid;
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: clamp(28px, 6vw, 86px);
+      align-items: start;
+    }
+
+    .step-list {
+      display: grid;
+      gap: 0;
+      border-top: 1px solid rgba(255, 250, 240, 0.16);
+    }
+
+    .step {
+      display: grid;
+      grid-template-columns: 64px minmax(0, 1fr);
+      gap: 22px;
+      padding: 28px 0;
+      border-bottom: 1px solid rgba(255, 250, 240, 0.16);
+    }
+
+    .step-num {
+      color: var(--accent);
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+    }
+
+    .step h3 {
+      color: var(--white);
+      font-size: 25px;
+      letter-spacing: -0.03em;
+      margin-bottom: 10px;
+    }
+
+    .step p {
+      color: rgba(255, 250, 240, 0.68);
+      line-height: 1.5;
+      font-size: 16px;
+      max-width: 620px;
+    }
+
+    .terms-box {
+      position: sticky;
+      top: 104px;
+      border: 1px solid rgba(255, 250, 240, 0.18);
+      background: rgba(255, 250, 240, 0.055);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      padding: 30px;
+    }
+
+    .terms-price {
+      font-size: clamp(42px, 5vw, 68px);
+      line-height: 0.95;
+      letter-spacing: -0.055em;
+      font-weight: 800;
+      margin-bottom: 12px;
+    }
+
+    .terms-copy {
+      color: rgba(255, 250, 240, 0.7);
+      line-height: 1.5;
+      font-size: 17px;
+      margin-bottom: 28px;
+    }
+
+    .terms-box .btn {
+      width: 100%;
+      margin-top: 10px;
+    }
+
+    .boundaries {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 24px;
+    }
+
+    .boundary {
+      border: 1px solid var(--line);
+      background: rgba(255, 253, 248, 0.78);
+      padding: clamp(24px, 3vw, 34px);
+      min-height: 250px;
+    }
+
+    .boundary h3 {
+      font-size: 30px;
+      letter-spacing: -0.04em;
+      margin-bottom: 16px;
+    }
+
+    .boundary ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      gap: 14px;
+    }
+
+    .boundary li {
+      color: var(--ink-soft);
+      line-height: 1.48;
+      display: grid;
+      grid-template-columns: 20px minmax(0, 1fr);
+      gap: 12px;
+    }
+
+    .boundary li::before {
+      content: "";
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--accent);
+      margin-top: 9px;
+    }
+
+    .closing {
+      padding: clamp(80px, 12vw, 150px) 0;
+      background:
+        linear-gradient(135deg, rgba(184, 95, 66, 0.22), transparent 45%),
+        var(--charcoal);
+      color: var(--white);
+    }
+
+    .closing-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(320px, 0.42fr);
+      gap: clamp(30px, 6vw, 90px);
+      align-items: end;
+    }
+
+    .closing h2 {
+      max-width: 900px;
+    }
+
+    .closing p {
+      margin-top: 24px;
+      max-width: 660px;
+      color: rgba(255, 250, 240, 0.7);
+      font-size: 19px;
+      line-height: 1.5;
+    }
+
+    .closing-actions {
+      display: grid;
+      gap: 12px;
+    }
+
+    .footer {
+      padding: 42px 0;
+      background: var(--charcoal);
+      color: rgba(255, 250, 240, 0.56);
+      border-top: 1px solid rgba(255, 250, 240, 0.12);
+    }
+
+    .footer-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      font-size: 13px;
+    }
+
+    .mobile-cta {
+      display: none;
+    }
+
+    @keyframes rise {
+      from {
+        opacity: 0;
+        transform: translateY(18px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .animate-in {
+      animation: rise 700ms cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+
+    .delay-1 {
+      animation-delay: 80ms;
+    }
+
+    .delay-2 {
+      animation-delay: 160ms;
+    }
+
+    .delay-3 {
+      animation-delay: 240ms;
+    }
+
+    @media (max-width: 980px) {
+      .hero-grid,
+      .section-header,
+      .compare,
+      .packet-details,
+      .steps,
+      .boundaries,
+      .closing-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .packet-wrap {
+        min-height: auto;
+      }
+
+      .packet-shadow {
+        display: none;
+      }
+
+      .terms-box {
+        position: static;
+      }
+
+      .offer-strip {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 700px) {
+      .shell {
+        width: min(100% - 32px, 1320px);
+      }
+
+      .topbar-inner {
+        min-height: 64px;
+      }
+
+      .brand {
+        width: 116px;
+        height: 40px;
+      }
+
+      .nav-actions .btn-secondary {
+        display: none;
+      }
+
+      .nav-actions .btn-primary {
+        min-height: 40px;
+        padding: 0 14px;
+        font-size: 13px;
+      }
+
+      .hero {
+        min-height: auto;
+        padding: 48px 0 54px;
+      }
+
+      .hero-grid {
+        gap: 36px;
+      }
+
+      h1 {
+        font-size: clamp(46px, 15vw, 68px);
+        line-height: 0.95;
+        letter-spacing: -0.05em;
+      }
+
+      .hero-copy {
+        font-size: 18px;
+        margin-top: 22px;
+      }
+
+      .hero-actions {
+        display: grid;
+        grid-template-columns: 1fr;
+      }
+
+      .btn {
+        width: 100%;
+      }
+
+      .packet {
+        padding: 20px;
+        min-height: auto;
+      }
+
+      .packet-top {
+        display: grid;
+      }
+
+      .stamp {
+        width: 92px;
+        height: 92px;
+        justify-self: end;
+        margin-top: -22px;
+      }
+
+      .packet-name {
+        font-size: 27px;
+      }
+
+      .packet-grid {
+        grid-template-columns: 1fr;
+        gap: 0;
+      }
+
+      .packet-meta {
+        min-height: auto;
+        padding-bottom: 16px;
+      }
+
+      h2 {
+        font-size: clamp(38px, 12vw, 56px);
+        line-height: 1;
+      }
+
+      .lead {
+        font-size: 17px;
+      }
+
+      .section {
+        padding: 68px 0;
+      }
+
+      .compare-col,
+      .boundary,
+      .terms-box {
+        padding: 24px;
+      }
+
+      .step {
+        grid-template-columns: 44px minmax(0, 1fr);
+        gap: 14px;
+      }
+
+      .closing {
+        padding-bottom: 124px;
+      }
+
+      .footer-inner {
+        display: grid;
+        gap: 10px;
+      }
+
+      .mobile-cta {
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 50;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+        padding: 10px 12px calc(10px + env(safe-area-inset-bottom));
+        background: rgba(255, 253, 248, 0.92);
+        border-top: 1px solid var(--line);
+        backdrop-filter: blur(18px);
+      }
+
+      .mobile-cta .btn {
+        min-height: 48px;
+        padding: 0 12px;
+        font-size: 13px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="shell topbar-inner">
+      <a class="brand" href="#top" aria-label="Hestia home">
+        <img class="brand-logo" src="../brand/hestia-nav-logo.png" alt="Hestia" />
+      </a>
+      <nav class="nav-actions" aria-label="Contact options">
+        <a class="btn btn-secondary" href="tel:+254715203884">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M7.1 4.8 9 4.1c.8-.3 1.6.1 1.9.8l.9 2.2c.2.6.1 1.2-.3 1.7l-1 1.1a10.9 10.9 0 0 0 4.6 4.6l1.1-1c.5-.4 1.1-.5 1.7-.3l2.2.9c.7.3 1.1 1.1.8 1.9l-.7 1.9c-.3.8-1 1.3-1.9 1.2C10.9 18.5 5.5 13.1 4.9 5.7c-.1-.9.4-1.6 1.2-1.9Z" fill="currentColor"/>
+          </svg>
+          Call
+        </a>
+        <a class="btn btn-primary" href="https://wa.me/254715203884" target="_blank" rel="noreferrer">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M12 4.2a7.6 7.6 0 0 0-6.6 11.4l-.8 3.8 3.9-.9A7.6 7.6 0 1 0 12 4.2Zm0 13.8a6.1 6.1 0 0 1-3.1-.8l-.3-.2-2.2.5.5-2.1-.2-.3A6.1 6.1 0 1 1 12 18Zm3.5-4.5c-.2-.1-1.2-.6-1.4-.7-.2-.1-.4-.1-.6.1l-.5.7c-.1.2-.3.2-.5.1a5 5 0 0 1-1.5-.9 5.8 5.8 0 0 1-1-1.3c-.1-.2 0-.4.1-.5l.4-.5c.1-.1.1-.3.2-.4v-.4c-.1-.1-.5-1.2-.7-1.6-.2-.4-.4-.4-.5-.4h-.5c-.2 0-.4.1-.6.3-.2.2-.8.8-.8 1.9s.8 2.2.9 2.4c.1.2 1.6 2.5 3.9 3.4.5.2 1 .4 1.3.5.6.2 1.1.2 1.5.1.5-.1 1.4-.6 1.6-1.1.2-.5.2-1 .1-1.1-.1-.2-.2-.2-.4-.3Z" fill="currentColor"/>
+          </svg>
+          WhatsApp Hestia
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="shell hero-grid">
+        <div>
+          <p class="eyebrow mono animate-in">Runda household placements</p>
+          <h1 class="animate-in delay-1">Verified help, before anyone enters your home.</h1>
+          <p class="hero-copy animate-in delay-2">
+            Hestia helps Runda households find domestic help with a written <strong>Trust Packet</strong>,
+            placement support, and day 7 and day 30 check-ins. You see the checks before you decide.
+          </p>
+          <div class="hero-actions animate-in delay-3">
+            <a class="btn btn-primary" href="https://wa.me/254715203884" target="_blank" rel="noreferrer">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M12 4.2a7.6 7.6 0 0 0-6.6 11.4l-.8 3.8 3.9-.9A7.6 7.6 0 1 0 12 4.2Zm0 13.8a6.1 6.1 0 0 1-3.1-.8l-.3-.2-2.2.5.5-2.1-.2-.3A6.1 6.1 0 1 1 12 18Zm3.5-4.5c-.2-.1-1.2-.6-1.4-.7-.2-.1-.4-.1-.6.1l-.5.7c-.1.2-.3.2-.5.1a5 5 0 0 1-1.5-.9 5.8 5.8 0 0 1-1-1.3c-.1-.2 0-.4.1-.5l.4-.5c.1-.1.1-.3.2-.4v-.4c-.1-.1-.5-1.2-.7-1.6-.2-.4-.4-.4-.5-.4h-.5c-.2 0-.4.1-.6.3-.2.2-.8.8-.8 1.9s.8 2.2.9 2.4c.1.2 1.6 2.5 3.9 3.4.5.2 1 .4 1.3.5.6.2 1.1.2 1.5.1.5-.1 1.4-.6 1.6-1.1.2-.5.2-1 .1-1.1-.1-.2-.2-.2-.4-.3Z" fill="currentColor"/>
+              </svg>
+              Start on WhatsApp
+            </a>
+            <a class="btn btn-secondary" href="tel:+254715203884">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M7.1 4.8 9 4.1c.8-.3 1.6.1 1.9.8l.9 2.2c.2.6.1 1.2-.3 1.7l-1 1.1a10.9 10.9 0 0 0 4.6 4.6l1.1-1c.5-.4 1.1-.5 1.7-.3l2.2.9c.7.3 1.1 1.1.8 1.9l-.7 1.9c-.3.8-1 1.3-1.9 1.2C10.9 18.5 5.5 13.1 4.9 5.7c-.1-.9.4-1.6 1.2-1.9Z" fill="currentColor"/>
+              </svg>
+              Call +254 715 203 884
+            </a>
+          </div>
+          <div class="offer-strip animate-in delay-3" aria-label="First household offer details">
+            <div class="offer-cell">
+              <p class="offer-label mono">Now accepting</p>
+              <p class="offer-value">5 Runda-area homes</p>
+            </div>
+            <div class="offer-cell">
+              <p class="offer-label mono">Trust setup</p>
+              <p class="offer-value">KES 5,000</p>
+            </div>
+            <div class="offer-cell">
+              <p class="offer-label mono">After start</p>
+              <p class="offer-value">7-day and 30-day check-ins</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="packet-wrap animate-in delay-2" aria-label="Sample Hestia Trust Packet">
+          <div class="packet-shadow" aria-hidden="true"></div>
+          <article class="packet">
+            <div class="packet-top">
+              <div>
+                <p class="packet-title mono">Sample Trust Packet</p>
+                <p class="packet-name">Njeri W. <br />Household Support</p>
+              </div>
+              <div class="stamp" aria-hidden="true">
+                <span class="mono">Reviewed<br />before<br />start</span>
+              </div>
+            </div>
+            <div class="packet-grid">
+              <div class="packet-meta">
+                <p class="label mono">Household need</p>
+                <p class="value">Weekday cooking, twice-weekly cleaning, school-run awareness.</p>
+              </div>
+              <div class="packet-meta">
+                <p class="label mono">Fit note</p>
+                <p class="value">Quiet home, clear routines, privacy-sensitive employer.</p>
+              </div>
+            </div>
+            <div class="packet-rows">
+              <div class="packet-row">
+                <span class="check-dot" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none">
+                    <path d="m5 12.5 4.4 4.2L19 7.3" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </span>
+                <div>
+                  <p class="label mono">Identity</p>
+                  <p><strong>ID seen and recorded.</strong> Name and contact details checked before interview.</p>
+                </div>
+              </div>
+              <div class="packet-row">
+                <span class="check-dot" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none">
+                    <path d="m5 12.5 4.4 4.2L19 7.3" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </span>
+                <div>
+                  <p class="label mono">References</p>
+                  <p><strong>Past employer called.</strong> Conduct, reliability, and reason for leaving noted in writing.</p>
+                </div>
+              </div>
+              <div class="packet-row">
+                <span class="check-dot" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none">
+                    <path d="m5 12.5 4.4 4.2L19 7.3" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </span>
+                <div>
+                  <p class="label mono">Household terms</p>
+                  <p><strong>Hours, pay, duties, privacy expectations, and trial terms</strong> are written before anyone starts.</p>
+                </div>
+              </div>
+              <div class="packet-row">
+                <span class="check-dot" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none">
+                    <path d="m5 12.5 4.4 4.2L19 7.3" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </span>
+                <div>
+                  <p class="label mono">After placement</p>
+                  <p><strong>Hestia checks in on day 7 and day 30</strong> so small issues are handled before they become bigger ones.</p>
+                </div>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="shell">
+        <div class="section-header">
+          <p class="section-kicker mono">Why Hestia</p>
+          <div>
+            <h2>A referral can give you a name. Hestia gives you a checked path.</h2>
+            <p class="lead">
+              A personal referral can be useful. It just should not be the whole plan when someone is entering your home.
+            </p>
+          </div>
+        </div>
+        <div class="compare">
+          <div class="compare-col">
+            <h3 class="compare-title">With a normal referral</h3>
+            <ul class="compare-list">
+              <li><span class="minus">-</span><span>You may get a trusted introduction, but the checks are usually informal.</span></li>
+              <li><span class="minus">-</span><span>Expectations often live in conversation, not in a written agreement.</span></li>
+              <li><span class="minus">-</span><span>If the match fails, you are usually the one chasing the next step.</span></li>
+              <li><span class="minus">-</span><span>Replacement, handover, and follow-up depend on goodwill.</span></li>
+            </ul>
+          </div>
+          <div class="compare-col hestia">
+            <h3 class="compare-title">With Hestia</h3>
+            <ul class="compare-list">
+              <li><span class="plus">+</span><span>You see a written Trust Packet before you decide who enters your home.</span></li>
+              <li><span class="plus">+</span><span>Your household routine, standards, privacy needs, and deal-breakers are captured first.</span></li>
+              <li><span class="plus">+</span><span>Interview, trial, duties, hours, pay, and house rules are made explicit.</span></li>
+              <li><span class="plus">+</span><span>Hestia stays available after the start, with day 7 and day 30 check-ins.</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="shell">
+        <div class="section-header">
+          <p class="section-kicker mono">What you see</p>
+          <div>
+            <h2>The decision is easier when the evidence is written down.</h2>
+            <p class="lead">
+              Hestia is not just sending a contact. The point is to reduce the guessing before the placement starts.
+            </p>
+          </div>
+        </div>
+        <div class="packet-details">
+          <div class="detail-panel">
+            <h3>Identity and references</h3>
+            <p>ID details, contact information, address notes, and past-employer feedback are captured before the household interview.</p>
+          </div>
+          <div class="detail-panel">
+            <h3>Skill and fit notes</h3>
+            <p>Cooking, cleaning, childcare, elderly care, appliance familiarity, communication style, and household rhythm are checked against what you actually need.</p>
+          </div>
+          <div class="detail-panel">
+            <h3>House rules agreement</h3>
+            <p>Pay, hours, days, duties, privacy expectations, phone use, visitors, keys, food, uniforms, and trial terms are written clearly.</p>
+          </div>
+          <div class="detail-panel">
+            <h3>Follow-up and replacement path</h3>
+            <p>If the match is not working, Hestia helps diagnose the issue and supports the next step where a replacement is feasible.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section dark">
+      <div class="shell steps">
+        <div>
+          <p class="section-kicker mono">How it works</p>
+          <h2>Four steps before someone starts in your home.</h2>
+          <p class="lead">
+            The process is handled by a person from Hestia, not a list of anonymous contacts.
+          </p>
+        </div>
+        <div class="step-list">
+          <div class="step">
+            <p class="step-num">01</p>
+            <div>
+              <p class="label mono">Needs call</p>
+              <h3>Tell us what has to work.</h3>
+              <p>We ask about your routine, household standards, past disappointments, must-haves, and non-negotiables.</p>
+            </div>
+          </div>
+          <div class="step">
+            <p class="step-num">02</p>
+            <div>
+              <p class="label mono">Trust Packet</p>
+              <h3>Review the checks before interview.</h3>
+              <p>You see identity, references, skills, fit notes, and recommended terms before anyone starts.</p>
+            </div>
+          </div>
+          <div class="step">
+            <p class="step-num">03</p>
+            <div>
+              <p class="label mono">Interview or trial</p>
+              <h3>Start with clear expectations.</h3>
+              <p>Hestia helps frame the interview, trial period, duties, hours, and house rules in writing.</p>
+            </div>
+          </div>
+          <div class="step">
+            <p class="step-num">04</p>
+            <div>
+              <p class="label mono">Check-ins</p>
+              <h3>Day 7 and day 30 are not left to chance.</h3>
+              <p>We check whether the arrangement is working and step in early if routines, expectations, or fit need adjustment.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="shell">
+        <div class="section-header">
+          <p class="section-kicker mono">If something is off</p>
+          <div>
+            <h2>Clear support. Clear limits. No vague promises.</h2>
+            <p class="lead">
+              A serious household service should say what it will do, and what it cannot honestly guarantee.
+            </p>
+          </div>
+        </div>
+        <div class="boundaries">
+          <article class="boundary">
+            <p class="label mono">Hestia helps with</p>
+            <h3>Recourse after placement</h3>
+            <ul>
+              <li>Checking in after the placement starts.</li>
+              <li>Helping clarify expectations if something feels off.</li>
+              <li>Supporting replacement discussions where a replacement is feasible.</li>
+              <li>Keeping the household and worker terms visible in writing.</li>
+            </ul>
+          </article>
+          <article class="boundary">
+            <p class="label mono">Hestia does not claim</p>
+            <h3>Impossible certainty</h3>
+            <ul>
+              <li>No service can promise that a worker will never leave.</li>
+              <li>No verification removes every possible household risk.</li>
+              <li>No match should begin without clear duties, pay, hours, and expectations.</li>
+              <li>If supply is not right, Hestia will say so instead of forcing a poor fit.</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section dark">
+      <div class="shell steps">
+        <div>
+          <p class="section-kicker mono">First household offer</p>
+          <h2>For five Runda-area households ready to try a checked placement.</h2>
+          <p class="lead">
+            This first offer is for homes that want written evidence, clear terms, and a person to call after the placement starts.
+          </p>
+        </div>
+        <aside class="terms-box" aria-label="Hestia first household placement terms">
+          <p class="section-kicker mono">Trust setup fee</p>
+          <p class="terms-price">KES 5,000</p>
+          <p class="terms-copy">
+            Includes the needs call, a candidate Trust Packet when a suitable candidate is available, interview or trial support,
+            written household terms, and day 7 and day 30 check-ins.
+          </p>
+          <a class="btn btn-primary" href="https://wa.me/254715203884" target="_blank" rel="noreferrer">Start on WhatsApp</a>
+          <a class="btn btn-secondary" href="tel:+254715203884">Call +254 715 203 884</a>
+        </aside>
+      </div>
+    </section>
+
+    <section class="closing">
+      <div class="shell closing-grid">
+        <div>
+          <p class="section-kicker mono">Hestia</p>
+          <h2>Before someone enters your home, ask for more than a name.</h2>
+          <p>
+            Ask for checks you can read, terms you can agree on, and a service that stays reachable after the first day.
+          </p>
+        </div>
+        <div class="closing-actions">
+          <a class="btn btn-primary" href="https://wa.me/254715203884" target="_blank" rel="noreferrer">WhatsApp Hestia</a>
+          <a class="btn btn-secondary" href="tel:+254715203884">Call Hestia</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="shell footer-inner">
+      <span>Hestia - verified household help for Nairobi homes.</span>
+      <span>+254 715 203 884 - hello@hestia.co.ke</span>
+    </div>
+  </footer>
+
+  <div class="mobile-cta" aria-label="Mobile contact options">
+    <a class="btn btn-secondary" href="tel:+254715203884">Call</a>
+    <a class="btn btn-primary" href="https://wa.me/254715203884" target="_blank" rel="noreferrer">WhatsApp</a>
+  </div>
+</body>
+</html>

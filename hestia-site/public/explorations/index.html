@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Hestia — Site 1, design variations</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+  href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@400;500;600;700;800&display=swap"
+  rel="stylesheet"
+/>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        fontFamily: {
+          display: ['"Outfit"', "sans-serif"],
+          mono: ['"JetBrains Mono"', "monospace"],
+        },
+      },
+    },
+  };
+</script>
+<style>
+  :root {
+    --bg: #f5f2ec;
+    --surface: #ffffff;
+    --ink: #1e1e1c;
+    --ink-soft: #6c6862;
+    --line: #e3ddd2;
+    --accent: #c2694a;
+  }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "JetBrains Mono", monospace;
+    -webkit-font-smoothing: antialiased;
+  }
+  .font-display { font-family: "Outfit", sans-serif; }
+
+  .grain {
+    position: fixed;
+    inset: 0;
+    z-index: 40;
+    pointer-events: none;
+    opacity: 0.04;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  .swatch { height: 1.1rem; width: 1.1rem; border-radius: 999px; border: 1px solid rgba(0,0,0,.08); }
+</style>
+</head>
+<body>
+<div class="grain"></div>
+
+<header class="px-5 md:px-10 pt-8 pb-4 flex items-center justify-between border-b border-[var(--line)]">
+  <div class="flex items-center gap-4">
+    <span class="font-display text-lg tracking-tight">Hestia</span>
+    <a href="../" class="text-[11px] uppercase tracking-[0.3em] text-[var(--ink-soft)] hover:text-[var(--accent)] transition-colors">
+      &larr; Back to live site
+    </a>
+  </div>
+  <span class="text-[11px] uppercase tracking-[0.3em] text-[var(--ink-soft)]">Design lab</span>
+</header>
+
+<!-- HERO -->
+<section class="px-5 md:px-10 pt-14 md:pt-20 pb-12 md:pb-16">
+  <div class="max-w-3xl">
+    <p class="text-[11px] uppercase tracking-[0.3em] text-[var(--accent)] mb-5">
+      Site 01 &mdash; &ldquo;Thursday, 6pm&rdquo; &mdash; design variations
+    </p>
+    <h1 class="font-display text-4xl md:text-6xl leading-[1.05] tracking-tight mb-6">
+      Same site. Same words.<br />Three different skins.
+    </h1>
+    <p class="text-sm md:text-base leading-relaxed text-[var(--ink-soft)] max-w-xl">
+      The live site is settled &mdash; the door&#8209;slide reveal (&ldquo;It&rsquo;s 6pm.&rdquo; /
+      &ldquo;You&rsquo;re home.&rdquo; / &ldquo;Nothing is on fire.&rdquo;) into &ldquo;Hestia already knew
+      what you&rsquo;d need,&rdquo; word for word. These three pages keep that exact copy and that exact
+      pinned&#8209;scroll mechanic, and only change the visual language &mdash; typography, palette, panel
+      shape, imagery treatment &mdash; so you can compare how the same promise reads in different clothes.
+      Baseline for comparison: <code class="text-[var(--ink)]">/thursday</code> (or <code class="text-[var(--ink)]">/</code>)
+      in the live app.
+    </p>
+  </div>
+</section>
+
+<!-- LIST -->
+<main>
+  <a href="variation-a-stamped-ledger.html" class="group block border-t border-[var(--line)]">
+    <div class="mx-auto px-5 md:px-10 py-12 md:py-16 grid grid-cols-1 md:grid-cols-[1fr_1.4fr] gap-8 md:gap-16 items-center">
+      <div
+        class="relative rounded-2xl overflow-hidden aspect-[5/4] md:aspect-[4/3] p-6 md:p-8 flex flex-col justify-between transition-transform duration-500 group-hover:-translate-y-1"
+        style="background-color:#211c18; color:#f1ece1;"
+      >
+        <span class="text-[11px] uppercase tracking-[0.3em] opacity-60">A / 03</span>
+        <div>
+          <div class="flex gap-2 mb-4">
+            <span class="swatch" style="background:#f1ece1;"></span>
+            <span class="swatch" style="background:#b6432a;"></span>
+            <span class="swatch" style="background:#211c18;"></span>
+          </div>
+          <p class="text-xs opacity-60">Fraunces (black) + IBM Plex Mono + Source Serif 4</p>
+        </div>
+      </div>
+      <div>
+        <p class="text-[11px] uppercase tracking-[0.3em] text-[var(--accent)] mb-4">
+          Heavier type &middot; rubber&#8209;stamp motif &middot; inkier red
+        </p>
+        <h2 class="font-display text-3xl md:text-5xl tracking-tight mb-4">A &mdash; Stamped Ledger</h2>
+        <p class="text-sm md:text-base leading-relaxed text-[var(--ink-soft)] max-w-xl mb-6">
+          Fraunces goes to black weight and drops the italic. A circular &ldquo;Verified&rdquo; stamp lands
+          on the reveal, dashed perforation lines mark the doors&rsquo; inner edges, and the accent shifts
+          to an inkier, more saturated red. Reads like a verified record more than a warm invitation.
+        </p>
+        <span class="inline-flex items-center gap-2 font-display font-semibold text-sm md:text-base transition-transform group-hover:translate-x-1">
+          Open this variation
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14m-6-7l7 7-7 7"/></svg>
+        </span>
+      </div>
+    </div>
+  </a>
+
+  <a href="variation-b-soft-modern.html" class="group block border-t border-[var(--line)]">
+    <div class="mx-auto px-5 md:px-10 py-12 md:py-16 grid grid-cols-1 md:grid-cols-[1.4fr_1fr] gap-8 md:gap-16 items-center">
+      <div>
+        <p class="text-[11px] uppercase tracking-[0.3em] text-[var(--accent)] mb-4">
+          Rounded bento panels &middot; floating gutter &middot; sage accent
+        </p>
+        <h2 class="font-display text-3xl md:text-5xl tracking-tight mb-4">B &mdash; Soft Modern</h2>
+        <p class="text-sm md:text-base leading-relaxed text-[var(--ink-soft)] max-w-xl mb-6">
+          The doors become two fully&#8209;rounded floating panels with a visible gap, the kitchen photo sits
+          inside a soft bento frame instead of going edge&#8209;to&#8209;edge, and the accent moves from
+          clay to a muted sage. Onest + Albert Sans reads calmer &mdash; closer to a considerate home&#8209;services
+          product than a magazine spread.
+        </p>
+        <span class="inline-flex items-center gap-2 font-display font-semibold text-sm md:text-base transition-transform group-hover:translate-x-1">
+          Open this variation
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14m-6-7l7 7-7 7"/></svg>
+        </span>
+      </div>
+      <div
+        class="relative rounded-2xl overflow-hidden aspect-[5/4] md:aspect-[4/3] p-6 md:p-8 flex flex-col justify-between transition-transform duration-500 group-hover:-translate-y-1"
+        style="background-color:#262220; color:#f7f3ec;"
+      >
+        <span class="text-[11px] uppercase tracking-[0.3em] opacity-60">B / 03</span>
+        <div>
+          <div class="flex gap-2 mb-4">
+            <span class="swatch" style="background:#f7f3ec;"></span>
+            <span class="swatch" style="background:#7c8c6a;"></span>
+            <span class="swatch" style="background:#262220;"></span>
+          </div>
+          <p class="text-xs opacity-60">Onest + Albert Sans</p>
+        </div>
+      </div>
+    </div>
+  </a>
+
+  <a href="variation-c-high-contrast.html" class="group block border-t border-b border-[var(--line)]">
+    <div class="mx-auto px-5 md:px-10 py-12 md:py-16 grid grid-cols-1 md:grid-cols-[1fr_1.4fr] gap-8 md:gap-16 items-center">
+      <div
+        class="relative rounded-2xl overflow-hidden aspect-[5/4] md:aspect-[4/3] p-6 md:p-8 flex flex-col justify-between transition-transform duration-500 group-hover:-translate-y-1"
+        style="background-color:#0d0c0b; color:#f4f0e8;"
+      >
+        <span class="text-[11px] uppercase tracking-[0.3em] opacity-60">C / 03</span>
+        <div>
+          <div class="flex gap-2 mb-4">
+            <span class="swatch" style="background:#f4f0e8;"></span>
+            <span class="swatch" style="background:#d6a04a;"></span>
+            <span class="swatch" style="background:#0d0c0b;"></span>
+          </div>
+          <p class="text-xs opacity-60">Archivo Black + Archivo</p>
+        </div>
+      </div>
+      <div>
+        <p class="text-[11px] uppercase tracking-[0.3em] text-[var(--accent)] mb-4">
+          Near&#8209;black &middot; all&#8209;caps poster type &middot; grayscale photography
+        </p>
+        <h2 class="font-display text-3xl md:text-5xl tracking-tight mb-4">C &mdash; High-Contrast Poster</h2>
+        <p class="text-sm md:text-base leading-relaxed text-[var(--ink-soft)] max-w-xl mb-6">
+          The palette drops to near&#8209;black with one desaturated ochre rule, headlines go to Archivo
+          Black in all caps at poster scale, and the kitchen photography is pushed toward grayscale. Hard
+          edges, no rounded corners. Reads more &ldquo;a service that means business&rdquo; than &ldquo;warm
+          welcome.&rdquo;
+        </p>
+        <span class="inline-flex items-center gap-2 font-display font-semibold text-sm md:text-base transition-transform group-hover:translate-x-1">
+          Open this variation
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14m-6-7l7 7-7 7"/></svg>
+        </span>
+      </div>
+    </div>
+  </a>
+</main>
+
+<footer class="px-5 md:px-10 py-10 flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px] uppercase tracking-[0.3em] text-[var(--ink-soft)]">
+  <span>Hestia &mdash; design exploration, not for production</span>
+  <span>Each page is self&#8209;contained: GSAP + ScrollTrigger via CDN, Tailwind CDN, Google Fonts</span>
+</footer>
+</body>
+</html>
