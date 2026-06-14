@@ -1,7 +1,11 @@
 {
   "permissions": {
     "allow": [
-      "Bash(python3 \"c:\\\\Users\\\\denis\\\\OneDrive\\\\Documents\\\\createv1\\\\_bmad\\\\scripts\\\\resolve_customization.py\" --skill \"c:\\\\Users\\\\denis\\\\OneDrive\\\\Documents\\\\createv1\\\\.claude\\\\skills\\\\bmad-agent-pm\" --key agent)"
+      "Bash(python3 \"c:\\\\Users\\\\denis\\\\OneDrive\\\\Documents\\\\createv1\\\\_bmad\\\\scripts\\\\resolve_customization.py\" --skill \"c:\\\\Users\\\\denis\\\\OneDrive\\\\Documents\\\\createv1\\\\.claude\\\\skills\\\\bmad-agent-pm\" --key agent)",
+      "Bash(npm --version)",
+      "Bash(npm install *)",
+      "Bash(vercel --version)",
+      "Bash(git --version)"
     ]
   }
 }

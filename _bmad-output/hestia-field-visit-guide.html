@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Hestia — Field Visit Guide</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Georgia', serif;
+      background: #f5f0eb;
+      color: #1a1a1a;
+      padding: 40px 20px;
+    }
+
+    .page {
+      max-width: 680px;
+      margin: 0 auto 60px auto;
+      background: #fff;
+      border-radius: 4px;
+      overflow: hidden;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.10);
+    }
+
+    .page-header {
+      background: #1a1a1a;
+      color: #f5f0eb;
+      padding: 24px 32px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+
+    .page-header h1 {
+      font-size: 22px;
+      letter-spacing: 3px;
+      font-weight: 400;
+      text-transform: uppercase;
+    }
+
+    .page-header .sub {
+      font-size: 11px;
+      letter-spacing: 2px;
+      opacity: 0.6;
+      text-transform: uppercase;
+    }
+
+    .page-header .page-label {
+      font-size: 11px;
+      letter-spacing: 2px;
+      opacity: 0.5;
+      text-transform: uppercase;
+      text-align: right;
+    }
+
+    .page-body {
+      padding: 32px;
+    }
+
+    /* SECTION BLOCKS */
+    .block {
+      border-left: 3px solid #1a1a1a;
+      padding: 16px 20px;
+      margin-bottom: 20px;
+      background: #faf8f5;
+    }
+
+    .block-label {
+      font-size: 10px;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: #888;
+      margin-bottom: 10px;
+      font-family: 'Arial', sans-serif;
+    }
+
+    .block-script {
+      font-size: 14px;
+      line-height: 1.7;
+      color: #2a2a2a;
+      font-style: italic;
+    }
+
+    .block-script strong {
+      font-style: normal;
+      font-weight: 700;
+      color: #1a1a1a;
+    }
+
+    .block-note {
+      font-size: 11px;
+      color: #888;
+      margin-top: 8px;
+      font-family: 'Arial', sans-serif;
+      letter-spacing: 0.5px;
+      font-style: normal;
+    }
+
+    /* ARROWS — question list */
+    .questions {
+      list-style: none;
+      margin-top: 6px;
+    }
+
+    .questions li {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 14px;
+      align-items: flex-start;
+    }
+
+    .questions li .arrow {
+      font-size: 16px;
+      color: #1a1a1a;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .questions li .q-text {
+      font-size: 14px;
+      line-height: 1.65;
+      font-style: italic;
+      color: #2a2a2a;
+    }
+
+    .questions li .q-note {
+      font-size: 11px;
+      color: #aaa;
+      font-family: 'Arial', sans-serif;
+      display: block;
+      margin-top: 3px;
+      font-style: normal;
+    }
+
+    /* REVEAL BLOCK */
+    .reveal-block {
+      border: 2px solid #1a1a1a;
+      padding: 20px 24px;
+      margin-bottom: 20px;
+      background: #f5f0eb;
+    }
+
+    .reveal-block .reveal-label {
+      font-size: 10px;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: #888;
+      margin-bottom: 12px;
+      font-family: 'Arial', sans-serif;
+    }
+
+    .reveal-block p {
+      font-size: 14px;
+      line-height: 1.75;
+      font-style: italic;
+      color: #1a1a1a;
+    }
+
+    .reveal-block .pause-note {
+      margin-top: 12px;
+      font-size: 11px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: #888;
+      font-family: 'Arial', sans-serif;
+      font-style: normal;
+    }
+
+    /* REMINDER STRIP */
+    .reminder-strip {
+      background: #1a1a1a;
+      color: #f5f0eb;
+      padding: 14px 20px;
+      font-size: 12px;
+      letter-spacing: 1px;
+      text-align: center;
+      font-family: 'Arial', sans-serif;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+
+    /* DIVIDER */
+    .divider {
+      border: none;
+      border-top: 1px dashed #ccc;
+      margin: 20px 0;
+    }
+
+    /* PAGE 2 — FIELD NOTES */
+    .field-row {
+      margin-bottom: 22px;
+    }
+
+    .field-label {
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #888;
+      font-family: 'Arial', sans-serif;
+      margin-bottom: 6px;
+    }
+
+    .field-line {
+      border-bottom: 1px solid #ccc;
+      height: 28px;
+      width: 100%;
+    }
+
+    .field-line-tall {
+      border-bottom: 1px solid #ccc;
+      height: 28px;
+      width: 100%;
+      margin-bottom: 6px;
+    }
+
+    .checkbox-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px 20px;
+      margin-top: 4px;
+    }
+
+    .checkbox-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      color: #2a2a2a;
+      font-family: 'Arial', sans-serif;
+    }
+
+    .checkbox-item .box {
+      width: 14px;
+      height: 14px;
+      border: 1.5px solid #555;
+      display: inline-block;
+      flex-shrink: 0;
+    }
+
+    .yesno-row {
+      display: flex;
+      gap: 24px;
+      margin-top: 6px;
+    }
+
+    .yesno-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-family: 'Arial', sans-serif;
+    }
+
+    .circle {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      border: 1.5px solid #555;
+      display: inline-block;
+      flex-shrink: 0;
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .mindset-box {
+      border: 1px solid #ccc;
+      padding: 16px 20px;
+      margin-bottom: 20px;
+      text-align: center;
+      background: #faf8f5;
+    }
+
+    .mindset-box p {
+      font-size: 13px;
+      line-height: 1.8;
+      font-style: italic;
+      color: #444;
+    }
+
+    @media print {
+      body { background: white; padding: 0; }
+      .page { box-shadow: none; margin-bottom: 0; page-break-after: always; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════════ PAGE 1 ═══ -->
+  <div class="page">
+
+    <div class="page-header">
+      <div>
+        <h1>Hestia</h1>
+        <div class="sub">Field Visit Guide</div>
+      </div>
+      <div class="page-label">Page 1 of 2<br/>Conversation Anchors</div>
+    </div>
+
+    <div class="page-body">
+
+      <div class="mindset-box">
+        <p>"I am not selling.<br/>
+        I am listening for pain.<br/>
+        My job is to help this person name<br/>
+        something they have already been feeling."</p>
+      </div>
+
+      <!-- OPEN -->
+      <div class="block">
+        <div class="block-label">Open — Permission</div>
+        <div class="block-script">
+          "Hi, I'm Dare from Hestia. We're building a home-support service for busy people.
+          <strong>I'm not here to sell anything today.</strong>
+          Can I steal 10 minutes?"
+        </div>
+        <div class="block-note">If hesitant → "No pressure at all. Even a no gives me something useful."</div>
+      </div>
+
+      <!-- WARM UP -->
+      <div class="block">
+        <div class="block-label">Warm Up — 1 or 2 questions only</div>
+        <div class="block-script">
+          "How long have you been in this area?" &nbsp;/&nbsp; "You stay alone or with others?"
+        </div>
+        <div class="block-note">Then bridge → "Okay, let me ask you something real…"</div>
+      </div>
+
+      <!-- DIG IN -->
+      <div class="block">
+        <div class="block-label">Dig In — Go slow. Let them talk.</div>
+        <ul class="questions">
+          <li>
+            <span class="arrow">→</span>
+            <div class="q-text">
+              "When you get home tired — what usually waits for you?"
+              <span class="q-note">Don't suggest answers. Let them speak.</span>
+            </div>
+          </li>
+          <li>
+            <span class="arrow">→</span>
+            <div class="q-text">
+              "What piles up first when things get hectic?"
+              <span class="q-note">If quiet, offer softly: "Dishes? Laundry? Cooking? Cleaning?"</span>
+            </div>
+          </li>
+          <li>
+            <span class="arrow">→</span>
+            <div class="q-text">
+              "How does it make you feel when the house is like that?"
+              <span class="q-note">PAUSE. WAIT. Write their exact words — tired, ashamed, demotivated, "I just ignore it."</span>
+            </div>
+          </li>
+          <li>
+            <span class="arrow">→</span>
+            <div class="q-text">
+              "When it gets bad — what do you usually do?"
+              <span class="q-note">Call someone? Order food? Do it yourself? Nothing?</span>
+            </div>
+          </li>
+          <li>
+            <span class="arrow">→</span>
+            <div class="q-text">
+              "What annoys you about that?"
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <!-- THE REVEAL -->
+      <div class="reveal-block">
+        <div class="reveal-label">The Reveal — Only after they have spoken</div>
+        <p>
+          "This is exactly why I'm building Hestia. That backlog, that feeling —
+          we want to remove it. Trusted help for cleaning, laundry, dishes,
+          and simple home food. Not hotel food. <strong>Mother's touch.</strong>
+          Chapati, rice stew, things that feel like home.
+          The goal is simple: you come home and the house feels lighter."
+        </p>
+        <div class="pause-note">— Pause. Watch their face. Their face is data. —</div>
+      </div>
+
+      <!-- CLOSE -->
+      <div class="block">
+        <div class="block-label">Close</div>
+        <ul class="questions">
+          <li>
+            <span class="arrow">→</span>
+            <div class="q-text">"Would that solve a real problem for you?"</div>
+          </li>
+          <li>
+            <span class="arrow">→</span>
+            <div class="q-text">
+              "What would you need to see before letting Hestia into your home?"
+              <span class="q-note">Write every condition. Each one is a product feature.</span>
+            </div>
+          </li>
+          <li>
+            <span class="arrow">→</span>
+            <div class="q-text">
+              "We're doing a few first home trials — one reset, honest feedback. Would you try it?"
+            </div>
+          </li>
+          <li>
+            <span class="arrow">→</span>
+            <div class="q-text">
+              "Do you know someone whose home is always overwhelmed? Friend, colleague, neighbour?"
+              <span class="q-note">Ask this regardless of their answer. Always.</span>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <div class="reminder-strip">
+        Reflect their words back before moving on — it makes them feel heard
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- ═══════════════════════════════════════════ PAGE 2 ═══ -->
+  <div class="page">
+
+    <div class="page-header">
+      <div>
+        <h1>Hestia</h1>
+        <div class="sub">Field Notes</div>
+      </div>
+      <div class="page-label">Page 2 of 2<br/>Fill after every visit</div>
+    </div>
+
+    <div class="page-body">
+
+      <div class="two-col">
+        <div class="field-row">
+          <div class="field-label">Date</div>
+          <div class="field-line"></div>
+        </div>
+        <div class="field-row">
+          <div class="field-label">Area / Location</div>
+          <div class="field-line"></div>
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field-label">Household Type</div>
+        <div class="checkbox-row">
+          <div class="checkbox-item"><span class="box"></span> Bachelor</div>
+          <div class="checkbox-item"><span class="box"></span> Couple</div>
+          <div class="checkbox-item"><span class="box"></span> Family</div>
+          <div class="checkbox-item"><span class="box"></span> Single Parent</div>
+          <div class="checkbox-item"><span class="box"></span> Busy Professional</div>
+          <div class="checkbox-item"><span class="box"></span> Other</div>
+        </div>
+      </div>
+
+      <hr class="divider"/>
+
+      <div class="field-row">
+        <div class="field-label">Biggest Backlog (circle all that apply)</div>
+        <div class="checkbox-row">
+          <div class="checkbox-item"><span class="box"></span> Dishes</div>
+          <div class="checkbox-item"><span class="box"></span> Laundry</div>
+          <div class="checkbox-item"><span class="box"></span> Cooking</div>
+          <div class="checkbox-item"><span class="box"></span> Cleaning</div>
+          <div class="checkbox-item"><span class="box"></span> Ironing</div>
+          <div class="checkbox-item"><span class="box"></span> Shopping</div>
+          <div class="checkbox-item"><span class="box"></span> Organising</div>
+          <div class="checkbox-item"><span class="box"></span> Bathroom</div>
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field-label">Worst Moment (when does the pain peak?)</div>
+        <div class="checkbox-row">
+          <div class="checkbox-item"><span class="box"></span> After work</div>
+          <div class="checkbox-item"><span class="box"></span> Weekends</div>
+          <div class="checkbox-item"><span class="box"></span> Visitors coming</div>
+          <div class="checkbox-item"><span class="box"></span> After travel</div>
+          <div class="checkbox-item"><span class="box"></span> After illness</div>
+          <div class="checkbox-item"><span class="box"></span> End of month</div>
+          <div class="checkbox-item"><span class="box"></span> Mornings</div>
+        </div>
+      </div>
+
+      <hr class="divider"/>
+
+      <div class="field-row">
+        <div class="field-label">Current Solution</div>
+        <div class="checkbox-row">
+          <div class="checkbox-item"><span class="box"></span> Self</div>
+          <div class="checkbox-item"><span class="box"></span> Mama Fua</div>
+          <div class="checkbox-item"><span class="box"></span> Cleaner</div>
+          <div class="checkbox-item"><span class="box"></span> Relative</div>
+          <div class="checkbox-item"><span class="box"></span> Takeaway</div>
+          <div class="checkbox-item"><span class="box"></span> Househelp</div>
+          <div class="checkbox-item"><span class="box"></span> Nothing</div>
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field-label">What frustrates them about that solution?</div>
+        <div class="field-line-tall"></div>
+        <div class="field-line-tall"></div>
+      </div>
+
+      <div class="field-row">
+        <div class="field-label">Their exact emotional words (write verbatim)</div>
+        <div class="field-line-tall"></div>
+        <div class="field-line-tall"></div>
+      </div>
+
+      <div class="field-row">
+        <div class="field-label">Trust conditions they named</div>
+        <div class="field-line-tall"></div>
+        <div class="field-line-tall"></div>
+      </div>
+
+      <hr class="divider"/>
+
+      <div class="two-col">
+        <div class="field-row">
+          <div class="field-label">Trial Interest</div>
+          <div class="yesno-row">
+            <div class="yesno-item"><span class="circle"></span> Yes</div>
+            <div class="yesno-item"><span class="circle"></span> Maybe</div>
+            <div class="yesno-item"><span class="circle"></span> No</div>
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field-label">Prefer: On-Demand or Monthly?</div>
+          <div class="yesno-row">
+            <div class="yesno-item"><span class="circle"></span> On-demand</div>
+            <div class="yesno-item"><span class="circle"></span> Monthly</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field-label">Referral (name + contact)</div>
+        <div class="field-line"></div>
+      </div>
+
+      <div class="field-row">
+        <div class="field-label">Next Step</div>
+        <div class="field-line"></div>
+      </div>
+
+      <hr class="divider"/>
+
+      <div class="mindset-box" style="margin-top:16px;">
+        <p style="font-size:12px; color:#888;">
+          Fill this immediately after you leave the door.<br/>
+          The emotional detail fades in 20 minutes.
+        </p>
+      </div>
+
+    </div>
+  </div>
+
+</body>
+</html>
