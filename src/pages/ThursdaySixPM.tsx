@@ -269,7 +269,7 @@ export default function ThursdaySixPM() {
         <Link to="/" className="flex items-center gap-2.5">
           <span className="block h-10 w-10 md:h-11 md:w-11 overflow-hidden rounded-full bg-[var(--ink)] shadow-[inset_0_1px_0_rgba(255,255,255,0.18)]">
             <img
-              src="/images/logo.png"
+              src="/images/log.png"
               alt="Hestia"
               className="h-full w-full scale-110 object-contain object-center"
             />
