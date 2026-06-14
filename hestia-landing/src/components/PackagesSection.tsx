@@ -8,7 +8,6 @@ const PACKAGES = [
     description:
       "A full domestic reset for overwhelmed homes — dishes, kitchen, bathrooms, floors, laundry, and a general tidy. The flagship trial.",
     cta: "Book the Home Reset trial",
-    message: "Hi Hestia, I'd like to book the Home Reset trial.",
   },
   {
     flagship: false,
@@ -17,7 +16,6 @@ const PACKAGES = [
     description:
       "For bachelors and busy professionals. Clothes washed, folded and ironed where possible. Bedroom tidy, bathroom and kitchen clean.",
     cta: "Book Laundry + Cleaning",
-    message: "Hi Hestia, I'd like to book the Laundry + Cleaning Relief trial.",
   },
   {
     flagship: false,
@@ -26,8 +24,6 @@ const PACKAGES = [
     description:
       "For anyone tired of eating badly. A simple Kenyan home meal prepared, kitchen cleaned, dishes handled, and a light tidy.",
     cta: "Book Mother's Touch",
-    message:
-      "Hi Hestia, I'd like to book the Mother's Touch Meal + Clean Kitchen trial.",
   },
 ];
 
@@ -83,7 +79,6 @@ export function PackagesSection() {
                 {pkg.description}
               </p>
               <WhatsAppButton
-                message={pkg.message}
                 variant={pkg.flagship ? "primary" : "secondary"}
                 className={`mt-8 w-full ${
                   !pkg.flagship ? "border-ink/20 hover:border-ink/40" : ""

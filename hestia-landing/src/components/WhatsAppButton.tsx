@@ -1,12 +1,10 @@
 import { whatsappLink } from "@/lib/site-config";
 
 export function WhatsAppButton({
-  message,
   variant = "primary",
   className = "",
   children,
 }: {
-  message: string;
   variant?: "primary" | "secondary" | "ghost";
   className?: string;
   children: React.ReactNode;
@@ -23,7 +21,7 @@ export function WhatsAppButton({
 
   return (
     <a
-      href={whatsappLink(message)}
+      href={whatsappLink()}
       target="_blank"
       rel="noopener noreferrer"
       className={`${base} ${variants[variant]} ${className}`}

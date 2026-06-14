@@ -12,7 +12,7 @@ export function CtaSection() {
           home back — not Saturday, this week — message us.
         </p>
         <div className="mt-9 flex justify-center">
-          <WhatsAppButton message="Hi Hestia, I'd like to book a trial.">
+          <WhatsAppButton>
             Book your trial on WhatsApp
           </WhatsAppButton>
         </div>

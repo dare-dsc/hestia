@@ -27,7 +27,7 @@ export function Hero() {
         </p>
 
         <div className="mt-9 flex flex-col gap-4 sm:flex-row sm:items-center">
-          <WhatsAppButton message="Hi Hestia, I'd like to book a Home Reset trial.">
+          <WhatsAppButton>
             Book your Home Reset trial
           </WhatsAppButton>
           <a

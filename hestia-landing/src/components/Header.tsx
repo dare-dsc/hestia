@@ -23,7 +23,6 @@ export function Header() {
         </nav>
 
         <WhatsAppButton
-          message="Hi Hestia, I'd like to know more about a trial."
           className="px-5 py-2.5 text-xs sm:text-sm"
         >
           Message us

@@ -18,7 +18,7 @@ export function Footer() {
         <div className="flex flex-col gap-1 text-sm sm:items-end">
           <p>Nairobi, Kenya — Founding Homes programme</p>
           <a
-            href={whatsappLink("Hi Hestia, I'd like to know more.")}
+            href={whatsappLink()}
             target="_blank"
             rel="noopener noreferrer"
             className="underline underline-offset-4 decoration-cream/30 hover:text-cream hover:decoration-cream"
