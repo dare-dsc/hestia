@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: system-ui, -apple-system, sans-serif; background: transparent; color: #1a1a1a; }
+  .container { max-width: 900px; margin: 0 auto; padding: 16px; }
+  h1.title { font-size: 15px; font-weight: 700; color: #111; letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 4px; }
+  .subtitle { font-size: 12px; color: #666; margin-bottom: 20px; }
+
+  /* TAB NAV */
+  .tabs { display: flex; gap: 4px; margin-bottom: 16px; flex-wrap: wrap; }
+  .tab { padding: 6px 12px; border-radius: 4px; font-size: 12px; font-weight: 600; cursor: pointer; border: 1.5px solid #ddd; background: #f8f8f8; color: #555; transition: all 0.15s; }
+  .tab.active { background: #1a1a1a; color: white; border-color: #1a1a1a; }
+  .tab:hover:not(.active) { background: #eee; }
+
+  /* PANELS */
+  
+  .panel { display: none; }
+  .panel.active { display: block; }
+
+  /* FIRMWARE CARDS */
+  .firmware-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  @media (max-width: 600px) { .firmware-grid { grid-template-columns: 1fr; } }
+  .fw-card { border-radius: 8px; padding: 14px; }
+  .fw-card.employer { background: #fff3e0; border-left: 4px solid #f57c00; }
+  .fw-card.worker { background: #e8f5e9; border-left: 4px solid #388e3c; }
+  .fw-card .label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: #888; margin-bottom: 6px; }
+  .fw-card .belief { font-size: 13px; font-weight: 700; color: #1a1a1a; margin-bottom: 6px; line-height: 1.3; }
+  .fw-card .installed-by { font-size: 11px; color: #555; line-height: 1.5; }
+  .fw-card .trigger { margin-top: 8px; font-size: 11px; font-style: italic; color: #777; background: rgba(0,0,0,0.04); border-radius: 4px; padding: 5px 8px; }
+  .section-head { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: #888; margin-bottom: 10px; margin-top: 16px; }
+
+  /* VOICES */
+  .voice-card { background: #fafafa; border: 1px solid #e8e8e8; border-radius: 8px; padding: 14px; margin-bottom: 10px; }
+  .voice-card .quote { font-size: 13px; font-style: italic; line-height: 1.6; color: #222; margin-bottom: 8px; }
+  .voice-card .meta { font-size: 11px; color: #888; }
+  .voice-card .tag { display: inline-block; padding: 2px 7px; border-radius: 10px; font-size: 10px; font-weight: 700; margin-right: 4px; }
+  .tag.employer-tag { background: #fff3e0; color: #f57c00; }
+  .tag.worker-tag { background: #e8f5e9; color: #388e3c; }
+  .tag.media-tag { background: #e3f2fd; color: #1976d2; }
+  .tag.crisis-tag { background: #fce4ec; color: #c62828; }
+
+  /* PROVINCES */
+  .prov-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  @media (max-width: 600px) { .prov-grid { grid-template-columns: 1fr 1fr; } }
+  .prov-card { border-radius: 8px; padding: 12px; border: 1.5px solid #e0e0e0; background: white; }
+  .prov-card .prov-name { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+  .prov-card .prov-type { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; }
+  .prov-card .prov-belief { font-size: 11px; color: #444; line-height: 1.5; margin-bottom: 6px; }
+  .prov-card .prov-wedge { font-size: 11px; color: #1565c0; background: #e3f2fd; border-radius: 4px; padding: 4px 7px; font-weight: 600; }
+  .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 4px; }
+  .dot-nairobi { background: #e53935; }
+  .dot-mombasa { background: #fb8c00; }
+  .dot-kisumu { background: #43a047; }
+  .dot-nakuru { background: #8e24aa; }
+  .dot-eldoret { background: #00838f; }
+  .dot-western { background: #6d4c41; }
+
+  /* WEDGE */
+  .wedge-list { display: flex; flex-direction: column; gap: 12px; }
+  .wedge-item { border-radius: 8px; padding: 14px; background: white; border: 1.5px solid #e0e0e0; }
+  .wedge-item .wedge-head { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+  .wedge-item .wedge-province { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; }
+  .wedge-item .wedge-segment { font-size: 11px; color: #888; }
+  .wedge-item .wedge-belief-crack { font-size: 13px; font-weight: 700; color: #c62828; margin-bottom: 6px; }
+  .wedge-item .wedge-offer { font-size: 12px; color: #1a1a1a; line-height: 1.5; }
+  .wedge-item .wedge-language { margin-top: 8px; font-size: 12px; font-style: italic; background: #f5f5f5; border-radius: 4px; padding: 6px 10px; color: #333; border-left: 3px solid #1565c0; }
+
+  /* PIPELINE */
+  .pipeline { display: flex; flex-direction: column; gap: 2px; }
+  .pipe-stage { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 6px; }
+  .pipe-stage .pipe-num { width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; color: white; flex-shrink: 0; }
+  .pipe-stage .pipe-content { flex: 1; }
+  .pipe-stage .pipe-belief { font-size: 13px; font-weight: 700; }
+  .pipe-stage .pipe-note { font-size: 11px; color: #555; margin-top: 2px; }
+  .pipe-arrow { text-align: center; color: #ccc; font-size: 16px; line-height: 1; }
+  .stage-1 { background: #fff3e0; } .pipe-stage.stage-1 .pipe-num { background: #f57c00; }
+  .stage-2 { background: #fce4ec; } .pipe-stage.stage-2 .pipe-num { background: #c62828; }
+  .stage-3 { background: #ede7f6; } .pipe-stage.stage-3 .pipe-num { background: #6a1b9a; }
+  .stage-4 { background: #e8f5e9; } .pipe-stage.stage-4 .pipe-num { background: #2e7d32; }
+  .stage-5 { background: #e3f2fd; } .pipe-stage.stage-5 .pipe-num { background: #1565c0; }
+
+  .legend { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 12px; }
+  .legend-item { display: flex; align-items: center; gap: 5px; font-size: 11px; color: #555; }
+  .legend-box { width: 12px; height: 12px; border-radius: 2px; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1 class="title">Kenya Maid Services — Belief Firmware Map</h1>
+  <p class="subtitle">K2M Cartographic Engine · Field Survey 2024–2025 · Nairobi / Mombasa / Kisumu / Nakuru / Eldoret / Western</p>
+
+  <div class="tabs">
+    <div class="tab active" onclick="switchTab('firmware')">Firmware Map</div>
+    <div class="tab" onclick="switchTab('voices')">Human Voices</div>
+    <div class="tab" onclick="switchTab('provinces')">Provinces</div>
+    <div class="tab" onclick="switchTab('wedge')">Wedge Plays</div>
+    <div class="tab" onclick="switchTab('pipeline')">Belief Pipeline</div>
+  </div>
+
+  <!-- FIRMWARE MAP -->
+  <div class="panel active" id="panel-firmware">
+    <div class="section-head">Employer Belief Firmware</div>
+    <div class="firmware-grid">
+      <div class="fw-card employer">
+        <div class="label">Firmware #E1 · Trust</div>
+        <div class="belief">"You cannot trust a stranger inside your home."</div>
+        <div class="installed-by">Installed by: Viral theft cases (KSh 98M, KSh 2.2M, KSh 1M), WhatsApp forwards, neighbour stories. Reinforced every time a new case makes Tuko/Kenyans.co.ke headlines.</div>
+        <div class="trigger">Trigger phrase: "My friend had a househelp who…" / "I don't trust them"</div>
+      </div>
+      <div class="fw-card employer">
+        <div class="label">Firmware #E2 · Agency Scepticism</div>
+        <div class="belief">"Even agencies can't really vet them properly."</div>
+        <div class="installed-by">Installed by: 44 recruitment agencies accused of fraud (2024), govt blacklisting 30+ agencies, fake background checks, friends who paid placement fees and got bad hires.</div>
+        <div class="trigger">Trigger phrase: "The agency sent us someone and within a month…"</div>
+      </div>
+      <div class="fw-card employer">
+        <div class="label">Firmware #E3 · Betrayal</div>
+        <div class="belief">"Even when they seem like family — they turn."</div>
+        <div class="installed-by">Installed by: The Salome Wanjiku story — trusted her "wholeheartedly," sent money faithfully, children were starving while maid faked M-Pesa receipts and lived on TikTok.</div>
+        <div class="trigger">Trigger phrase: "I treated her well and she still…"</div>
+      </div>
+      <div class="fw-card employer">
+        <div class="label">Firmware #E4 · Network Trust</div>
+        <div class="belief">"Only someone referred by someone I know is safe."</div>
+        <div class="installed-by">Installed by: Community social networks, tribal trust systems, the reality that the best hires come from personal introductions — not cold agencies.</div>
+        <div class="trigger">Trigger phrase: "She came through my cousin's neighbour's…"</div>
+      </div>
+      <div class="fw-card employer">
+        <div class="label">Firmware #E5 · Diaspora Paralysis</div>
+        <div class="belief">"If I'm abroad, I have no control — anything can happen."</div>
+        <div class="installed-by">Installed by: 3,000+ Kenyans stranded abroad with families at home; horror stories of children starved, beaten, abused while parents work in Saudi Arabia/UK/US.</div>
+        <div class="trigger">Trigger phrase: "I'm in [country] and I can't see what's happening at home"</div>
+      </div>
+      <div class="fw-card employer">
+        <div class="label">Firmware #E6 · Training Premium</div>
+        <div class="belief">"A trained maid is worth more — but she'll leave you for better pay."</div>
+        <div class="installed-by">Emerging in urban Nairobi upper-middle class. Positive experiences with trained agencies (Dovecare: "game-changer") coexist with fear that good ones are unstable.</div>
+        <div class="trigger">Trigger phrase: "We finally found a good one but I'm afraid she'll go"</div>
+      </div>
+    </div>
+
+    <div class="section-head" style="margin-top:20px;">Worker Belief Firmware</div>
+    <div class="firmware-grid">
+      <div class="fw-card worker">
+        <div class="label">Firmware #W1 · Power Silence</div>
+        <div class="belief">"I cannot complain or I'll lose my job."</div>
+        <div class="installed-by">Installed by: Employer power asymmetry, risk of false accusations, poverty as constraint. Avg actual pay is KSh 8,841 — well below legal minimum of KSh 16,113. Workers comply to survive.</div>
+        <div class="trigger">Trigger phrase: "I don't want trouble" / "I just keep my head down"</div>
+      </div>
+      <div class="fw-card worker">
+        <div class="label">Firmware #W2 · Pre-Accused</div>
+        <div class="belief">"They think I'm a thief before I even start."</div>
+        <div class="installed-by">Installed by: Background check culture, CCTV surveillance, locked rooms, itemised inventories, treatment as suspect rather than employee from day one.</div>
+        <div class="trigger">Trigger phrase: "They count everything" / "They watch my every move"</div>
+      </div>
+      <div class="fw-card worker">
+        <div class="label">Firmware #W3 · Abroad Escape</div>
+        <div class="belief">"Going abroad pays more — even with the risks."</div>
+        <div class="installed-by">Installed by: Saudi Arabia/Qatar/UAE wage differentials even in abuse conditions. Social proof from peers who remit money home. Desperation overrides risk information.</div>
+        <div class="trigger">Trigger phrase: "Nairobi pay is too little" / "My friend went to Saudi and…"</div>
+      </div>
+      <div class="fw-card worker">
+        <div class="label">Firmware #W4 · Invisible Labour</div>
+        <div class="belief">"No one sees what I actually do all day."</div>
+        <div class="installed-by">Installed by: Informal employment with no contract, no leave, no NHIF, no defined hours. Domestic work is structurally invisible to labour protections.</div>
+        <div class="trigger">Trigger phrase: "I work from 5am to 10pm and they pay me…"</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HUMAN VOICES -->
+  <div class="panel" id="panel-voices">
+    <div class="section-head">Verbatim from the Field</div>
+    
+    <div class="voice-card">
+      <div class="quote">"After toiling hard looking for greener pastures, my baby was suffering under someone I trusted wholeheartedly."</div>
+      <div class="meta"><span class="tag employer-tag">Employer</span><span class="tag crisis-tag">Diaspora Crisis</span> Salome Wanjiku — Kenyan mum abroad, via Facebook, 2025. Househelp had faked M-Pesa receipts for school fees and abandoned children with no food.</div>
+    </div>
+
+    <div class="voice-card">
+      <div class="quote">"Let this be a warning to fellow diaspora parents: may we find good guardians for our children. Because when it goes wrong, it hurts deep."</div>
+      <div class="meta"><span class="tag employer-tag">Employer</span> Salome Wanjiku — direct Facebook post. Published in Tuko.co.ke, August 2025.</div>
+    </div>
+
+    <div class="voice-card">
+      <div class="quote">"I feel terrible, especially as a mother. I know you're not sleeping. Kindly look for a responsible person as you look for her. I am very sure she knows you're looking for her."</div>
+      <div class="meta"><span class="tag media-tag">Comment</span> Celina Don Queen — Kenyan social media comment on Salome's story, 2025.</div>
+    </div>
+
+    <div class="voice-card">
+      <div class="quote">"You don't have a kind and caring relative (e.g. siblings) who can stay with your boys? This is sad. I am a mother of boys too and no mother deserves this."</div>
+      <div class="meta"><span class="tag media-tag">Comment</span> Joy Michaels — social media comment, 2025. Note: advice defaults to family, not formal system.</div>
+    </div>
+
+    <div class="voice-card">
+      <div class="quote">"Kenyans overwhelmingly agreed that one should not entrust an outsider such as a househelp, especially if leaving the country for a long time."</div>
+      <div class="meta"><span class="tag media-tag">Editorial</span> Tuko.co.ke journalist's summary of reader comments — structural belief E1 confirmed at mass scale.</div>
+    </div>
+
+    <div class="voice-card">
+      <div class="quote">"Choosing Dovecare for a house manager was a game-changer. They truly understand our needs, making daily life stress-free. Highly recommended!"</div>
+      <div class="meta"><span class="tag employer-tag">Employer</span><span class="tag employer-tag">Positive</span> Dovecare Africa client testimonial, Nairobi. Represents the counter-belief: the right service CAN flip E1.</div>
+    </div>
+
+    <div class="voice-card">
+      <div class="quote">"She immediately bonded with my son and daughter. She has excellent values in caring for children. Her housework and cooking are excellent. Dealing with her is a great pleasure; she is always on time, reliable, polite and highly professional."</div>
+      <div class="meta"><span class="tag employer-tag">Employer</span><span class="tag employer-tag">Positive</span> Sashley Nannies client review, Nairobi. The language of "professional" signals the belief gap to exploit.</div>
+    </div>
+
+    <div class="voice-card">
+      <div class="quote">"Employers' attitudes towards domestic workers are dismissive and demeaning — employers hold the attitude that domestic workers are underdogs who cannot hold anything against them."</div>
+      <div class="meta"><span class="tag worker-tag">Worker Perspective</span> Culture Clash: Domestic Workers and Their Employers in Kenya (CDTD research paper, 2024). Direct research finding.</div>
+    </div>
+
+    <div class="voice-card">
+      <div class="quote">"Poverty has condemned domestic workers to give in so that they can continue getting tips to top up their meagre wages — or simply keep their jobs."</div>
+      <div class="meta"><span class="tag worker-tag">Worker Perspective</span> CDTD research, 2024. Firmware W1 confirmed by institutional research.</div>
+    </div>
+  </div>
+
+  <!-- PROVINCES -->
+  <div class="panel" id="panel-provinces">
+    <div class="section-head">Provincial Belief Terrain</div>
+    <div class="prov-grid">
+      <div class="prov-card">
+        <div class="prov-name"><span class="dot dot-nairobi"></span>Nairobi</div>
+        <div class="prov-type" style="color:#e53935;">Primary Market · Densest Competition</div>
+        <div class="prov-belief">Dominant belief: "Trust must be earned, not assumed." Most formal, most transactional. Highest anxiety around theft — the headlines all happen here. 100+ agencies operating. Upper-middle class increasingly willing to pay for trained, vetted help.</div>
+        <div class="prov-wedge">Wedge: Diaspora parents needing remote visibility</div>
+      </div>
+      <div class="prov-card">
+        <div class="prov-name"><span class="dot dot-mombasa"></span>Mombasa</div>
+        <div class="prov-type" style="color:#fb8c00;">Secondary Market · Cultural Specificity</div>
+        <div class="prov-belief">Coastal/Swahili culture values personal character reference differently. Muslim household norms affect live-in vs. day-help dynamics. Tourism economy creates demand from expats and wealthier households. Community vetting matters more here than formal certificates.</div>
+        <div class="prov-wedge">Wedge: Community-trust integration + expat market</div>
+      </div>
+      <div class="prov-card">
+        <div class="prov-name"><span class="dot dot-kisumu"></span>Kisumu</div>
+        <div class="prov-type" style="color:#43a047;">Source + Emerging Market</div>
+        <div class="prov-belief">Lake region. Still largely informal hiring. Community-based referral dominates — you hire from your network or someone in the village. Growing middle class starting to formalise. Also a sending region: Luo workers go to Nairobi. Minimum wages set here: KSh 16,113 in theory, KSh 8,841 in practice.</div>
+        <div class="prov-wedge">Wedge: Reputation-building before Nairobi deployment</div>
+      </div>
+      <div class="prov-card">
+        <div class="prov-name"><span class="dot dot-nakuru"></span>Nakuru</div>
+        <div class="prov-type" style="color:#8e24aa;">Transitional Market · Price Sensitivity</div>
+        <div class="prov-belief">Growing urban centre. SME/entrepreneur class creates dual-income households with domestic needs. Old informal patterns (village referral) colliding with new formal expectations. Cannot afford Nairobi agency rates but wants Nairobi-level trust. Underserved by formal services.</div>
+        <div class="prov-wedge">Wedge: Professional standard at Nakuru price point</div>
+      </div>
+      <div class="prov-card">
+        <div class="prov-name"><span class="dot dot-eldoret"></span>Eldoret / Rift Valley</div>
+        <div class="prov-type" style="color:#00838f;">Escape Route · Source Region</div>
+        <div class="prov-belief">Known pattern: runaway domestic workers traced to Eldoret/Rift area (KSh 2.2M theft case, KSh 98M theft — arrested in Eldoret). Both source AND flight destination. Athletic/sports economy creates some demand. Largely informal. Trust crisis compounds here because of the runaway pattern.</div>
+        <div class="prov-wedge">Wedge: Verified identity with hometown accountability</div>
+      </div>
+      <div class="prov-card">
+        <div class="prov-name"><span class="dot dot-western"></span>Western Kenya</div>
+        <div class="prov-type" style="color:#6d4c41;">Source Region · Sending Community</div>
+        <div class="prov-belief">Kakamega, Bungoma, Vihiga — primary source of domestic workers flowing to Nairobi/Mombasa. The belief system here is worker-side: "Nairobi is opportunity but danger." Rural poverty drives supply. Social proof from returnees (both success and abuse stories) shapes the decision.</div>
+        <div class="prov-wedge">Wedge: Worker dignity + safe deployment pathways</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WEDGE PLAYS -->
+  <div class="panel" id="panel-wedge">
+    <div class="section-head">Early Adopter Wedge Plays by Province</div>
+    <div class="wedge-list">
+
+      <div class="wedge-item">
+        <div class="wedge-head">
+          <span class="dot dot-nairobi"></span>
+          <span class="wedge-province">Nairobi — Diaspora Segment</span>
+          <span class="wedge-segment">· Earliest adopter potential · Highest willingness to pay</span>
+        </div>
+        <div class="wedge-belief-crack">Cracked belief: "If I'm abroad I have no control." (Firmware E5)</div>
+        <div class="wedge-offer">The product that wins here gives diaspora parents <em>live proof of care</em> — not just a hire. Think: daily morning check-in video to parent's WhatsApp. GPS timestamping of school drop-offs. Monthly verified reporting. M-Pesa transparency (no more fake receipts). The Salome Wanjiku story is the exact brief for this product. She is your archetype. She has money, pain, and internet access.</div>
+        <div class="wedge-language">"You should be able to see your children are fed and safe — from wherever you are in the world. That's not luxury. That's what you're working for."</div>
+      </div>
+
+      <div class="wedge-item">
+        <div class="wedge-head">
+          <span class="dot dot-nairobi"></span>
+          <span class="wedge-province">Nairobi — DINK/Professional Households</span>
+          <span class="wedge-segment">· Upper-middle class · Both parents working</span>
+        </div>
+        <div class="wedge-belief-crack">Cracked belief: "Trained = reliable, but she'll leave for better pay." (Firmware E6)</div>
+        <div class="wedge-offer">This group has already bought the training premium (uses agencies like Dovecare/Sashley). Their next cracked belief is retention and consistency. A subscription model with retention incentives, worker benefits (NHIF, development), and placement replacement guarantees hits this exactly. The "game-changer" testimonial is already in the market — you just need to make it repeatable and not fragile.</div>
+        <div class="wedge-language">"Stop starting over every six months. Keep the one who knows your home."</div>
+      </div>
+
+      <div class="wedge-item">
+        <div class="wedge-head">
+          <span class="dot dot-mombasa"></span>
+          <span class="wedge-province">Mombasa — Coastal + Expat Segment</span>
+          <span class="wedge-segment">· Cultural specificity required</span>
+        </div>
+        <div class="wedge-belief-crack">Cracked belief: "Only someone from my community is safe." (Firmware E4 — coastal version)</div>
+        <div class="wedge-offer">Mombasa doesn't need just a background check — it needs a cultural trust bridge. The wedge is a service that integrates Islamic calendar (Ramadan work arrangements), Swahili cultural norms, and expat comfort with formality. Coastal community elder endorsement as part of the vetting process is a differentiator no Nairobi agency can replicate from a distance. Target: expat families, Mombasa's tourist-economy professionals.</div>
+        <div class="wedge-language">"Vetted the Mombasa way — with community standing, not just paperwork."</div>
+      </div>
+
+      <div class="wedge-item">
+        <div class="wedge-head">
+          <span class="dot dot-kisumu"></span>
+          <span class="wedge-province">Kisumu / Western — Worker-Side Wedge</span>
+          <span class="wedge-segment">· Source community · Flip the supply chain</span>
+        </div>
+        <div class="wedge-belief-crack">Cracked belief (worker): "I have no reputation before I arrive." (Firmware W2 — origin)</div>
+        <div class="wedge-offer">The product nobody has built: a verifiable reputation system for domestic workers at the source. Before they travel to Nairobi, workers in Kisumu/Kakamega get verified, trained, and profiled. They arrive with a credential that employers trust. This flips the asymmetry — instead of workers being suspects, they are certified professionals. This also creates a migration pathway that doesn't route through Gulf abuse.</div>
+        <div class="wedge-language">"Arrive in Nairobi known. Not as a stranger. As a professional."</div>
+      </div>
+
+      <div class="wedge-item">
+        <div class="wedge-head">
+          <span class="dot dot-nakuru"></span>
+          <span class="wedge-province">Nakuru — Underserved Middle Class</span>
+          <span class="wedge-segment">· Price-sensitive · Nairobi aspirations</span>
+        </div>
+        <div class="wedge-belief-crack">Cracked belief: "Professional maid services are only for Nairobi people." (Firmware E4 — access gap)</div>
+        <div class="wedge-offer">Nakuru's growing SME/entrepreneur class wants what Nairobi has but can't access it at Nairobi prices or distances. A localised, lower-cost version of the trust infrastructure — trained, background-checked workers, placed by a service that operates in Nakuru's price context — is an immediate market. Early adopters here are the dual-income households who've had bad informal hires and are ready for a system.</div>
+        <div class="wedge-language">"The same trust you'd get in Nairobi. At Nakuru prices. Without the bus fare."</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- BELIEF PIPELINE -->
+  <div class="panel" id="panel-pipeline">
+    <div class="section-head">The Belief Pipeline — How Employers Get Stuck</div>
+    <p style="font-size:12px; color:#666; margin-bottom:14px;">Every employer in Kenya moves through this pipeline. The wedge enters at Stage 3 — the cracked belief is the entry point for a new product or service.</p>
+    <div class="pipeline">
+      <div class="pipe-stage stage-1">
+        <div class="pipe-num">1</div>
+        <div class="pipe-content">
+          <div class="pipe-belief">Need Activates</div>
+          <div class="pipe-note">Working spouse, new baby, diaspora departure, ageing parent — something creates genuine domestic need.</div>
+        </div>
+      </div>
+      <div class="pipe-arrow">↓</div>
+      <div class="pipe-stage stage-2">
+        <div class="pipe-num">2</div>
+        <div class="pipe-content">
+          <div class="pipe-belief">Fear Firmware Fires</div>
+          <div class="pipe-note">"What if she steals?" / "What if she hurts my children?" — Tuko headlines, WhatsApp horror stories flood the decision space.</div>
+        </div>
+      </div>
+      <div class="pipe-arrow">↓</div>
+      <div class="pipe-stage stage-3">
+        <div class="pipe-num">3</div>
+        <div class="pipe-content">
+          <div class="pipe-belief">Workaround Behaviour</div>
+          <div class="pipe-note">Ask network for referral. Try a random agency. Hire a relative. Lock valuables. Set up CCTV. Each workaround confirms the distrust.</div>
+        </div>
+      </div>
+      <div class="pipe-arrow">↓</div>
+      <div class="pipe-stage stage-4">
+        <div class="pipe-num">4</div>
+        <div class="pipe-content">
+          <div class="pipe-belief">Pain Event or Relief Event</div>
+          <div class="pipe-note">Either: hire goes wrong (theft, neglect, disappearance) → fear firmware resets at maximum. OR: hire goes well → quiet relief, "game-changer" testimonial.</div>
+        </div>
+      </div>
+      <div class="pipe-arrow">↓</div>
+      <div class="pipe-stage stage-5">
+        <div class="pipe-num">5</div>
+        <div class="pipe-content">
+          <div class="pipe-belief">Belief Revision Window ← WEDGE ENTERS HERE</div>
+          <div class="pipe-note">After a pain event: employer is actively searching for a better system. After a relief event: employer is an evangelist waiting to be activated. Both states are acquisition moments.</div>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top:16px; padding:12px; background:#f5f5f5; border-radius:8px; font-size:12px; color:#444; line-height:1.6;">
+      <strong>The pattern:</strong> Pain events get press (Tuko, Kenyans.co.ke). Relief events get quiet testimonials buried on agency websites. A product that amplifies the relief story at the scale of the pain story will shift the firmware at the population level — not just for individual adopters.
+    </div>
+  </div>
+
+</div>
+
+<script>
+  function switchTab(name) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    document.getElementById('panel-' + name).classList.add('active');
+    event.target.classList.add('active');
+  }
+</script>
+</body>
+</html>
