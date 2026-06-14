@@ -1,17 +1,11 @@
 // Shared raw content for Hestia concept directions.
 // Each direction adapts the voice/styling — the underlying facts stay consistent.
 
-const WHATSAPP_STARTER =
-  "Hi Hestia, I am interested in trusted home support. Can you help me start the Runda household placement?";
-
 export const CONTACT = {
   phone: "+254 704 872 150",
   phoneDisplay: "0704872150",
-  whatsapp: `https://wa.me/254704872150?text=${encodeURIComponent(
-    WHATSAPP_STARTER,
-  )}`,
+  whatsapp: `https://wa.me/254704872150`,
   whatsappDisplay: "wa.me/254704872150",
-  whatsappStarter: WHATSAPP_STARTER,
 } as const;
 
 export const SOCIALS = {
