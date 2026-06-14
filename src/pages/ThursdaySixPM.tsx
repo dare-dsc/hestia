@@ -91,7 +91,7 @@ const HOUSEHOLD_FEARS = [
 ];
 
 const OFFER_POINTS = [
-  "5 founding Runda-area homes",
+  "Nairobi and Kiambu Areas",
   "Trust Packet before placement",
   "KES 5,000 trust setup",
 ];
